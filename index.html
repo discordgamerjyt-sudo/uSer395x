@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>uSer395x</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:Arial, sans-serif;
+  min-height:100vh;
+  background:linear-gradient(135deg,#1D2D44,#1a1a1a);
+  color:white;
+  overflow:hidden; /* prevent scrolling */
+}
+
+/* NAVBAR */
+.navbar{
+  width:100%;
+  padding:20px 40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:fixed;
+  top:0;
+  left:0;
+  background:#111111e6;
+  backdrop-filter:blur(10px);
+  z-index:1000;
+}
+
+.logo{
+  font-family:'Orbitron', sans-serif;
+  font-size:1.5rem;
+  letter-spacing:2px;
+}
+
+.search-bar{
+  flex:1;
+  max-width:420px;
+  margin:0 40px;
+  position:relative;
+}
+
+.search-bar input{
+  width:100%;
+  padding:11px 18px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,0.12);
+  background: rgba(40,40,50,0.9); /* higher opacity */
+  backdrop-filter:blur(10px);
+  color:white;
+  font-size:1rem;
+  outline:none;
+  transition:all 0.22s;
+  caret-color:#00d4ff;
+}
+
+.search-bar input:focus{
+  border-color:#4cc9ff;
+  box-shadow:0 0 0 3px rgba(76,201,255,0.18);
+  background: rgba(40,40,50,0.95);
+}
+
+.search-bar input::placeholder{
+  color:rgba(255,255,255,0.45);
+}
+
+.social-icons{
+  display:flex;
+  gap:15px;
+}
+
+.social-icons a{
+  width:28px;
+  height:28px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  opacity:0.8;
+  transition:0.2s ease;
+}
+
+.social-icons a:hover{
+  opacity:1;
+  transform:scale(1.1);
+}
+
+.social-icons a svg {
+  width:100%;
+  height:100%;
+}
+
+/* MAIN CONTENT */
+.container{
+  width:90%;
+  max-width:1000px;
+  text-align:center;
+  margin:160px auto 60px auto;
+}
+
+h1{
+  font-family:'Orbitron', sans-serif;
+  font-size:3.5rem;
+  letter-spacing:4px;
+  margin-bottom:10px;
+}
+
+.pfp{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  margin:20px auto;
+  display:block;
+  border:2px solid rgba(255,255,255,0.3);
+  object-fit:cover;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:25px;
+}
+
+.card{
+  padding:40px 20px;
+  border-radius:20px;
+  backdrop-filter:blur(12px);
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
+  transition:0.3s ease;
+  text-decoration:none;
+  color:white;
+}
+
+.card:hover{
+  transform:translateY(-6px) scale(1.02);
+  background:rgba(255,255,255,0.08);
+}
+
+.card p{
+  font-size:0.85rem;
+  opacity:0.7;
+}
+
+/* COPYRIGHT */
+footer{
+  text-align:center;
+  margin-top:70px; /* moved up 10px */
+  font-size:0.8rem;
+  opacity:0.6;
+  padding-bottom:20px;
+}
+
+/* GLOBAL SEARCH OVERLAY */
+.global-search-overlay{
+  position:fixed;
+  inset:80px 0 0 0;
+  background:rgba(17,17,17,0.96);
+  backdrop-filter:blur(12px);
+  z-index:999;
+  display:none;
+  opacity:0;
+  transition:opacity 0.25s ease;
+  overflow-y:auto;
+  padding:30px 20px;
+}
+
+.global-search-overlay.active{
+  display:flex;
+  opacity:1;
+}
+
+.search-content{
+  max-width:760px;
+  width:100%;
+  margin:0 auto;
+}
+
+.search-results-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.search-result-item{
+  padding:14px 18px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.09);
+  border-radius:10px;
+  cursor:pointer;
+  transition:all 0.18s ease;
+  color:white;
+  font-size:1.05rem;
+}
+
+.search-result-item:hover{
+  background:rgba(76,201,255,0.12);
+  border-color:rgba(76,201,255,0.3);
+  transform:translateX(5px);
+}
+
+.no-results-message{
+  text-align:center;
+  padding:80px 20px;
+  color:#888;
+  font-size:1.15rem;
+  opacity:0.7;
+}
+
+/* MOBILE */
+@media (max-width:768px){
+  .navbar{flex-direction:column; gap:15px; padding:20px;}
+  .search-bar{max-width:100%; margin:0;}
+  h1{font-size:2.2rem;}
+  .container{margin:140px auto 40px auto;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+  <div class="logo">uSer395x</div>
+  <div class="search-bar">
+    <input id="globalSearchInput" type="text" placeholder="Search..." autocomplete="off">
+  </div>
+  <div class="social-icons">
+    <!-- YouTube -->
+    <a href="https://youtube.com/@user395xu3?si=FjXX9DdqkmaTI0S1" target="_blank">
+      <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+        <path d="M23.498 6.186a3.006 3.006 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.006 3.006 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.006 3.006 0 0 0 2.122 2.136c1.872.505 9.377.505 9.377.505s7.505 0 9.377-.505a3.006 3.006 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+      </svg>
+    </a>
+    <!-- Telegram -->
+    <a href="https://t.me/uSer395x" target="_blank">
+      <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+        <title>Telegram</title>
+        <path d="M9.417 15.181l-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.639-17.071c.359-1.659-.638-2.418-1.827-1.923l-21.707 8.312c-1.725.684-1.711 1.656-.315 2.079l5.467 1.696 12.663-7.934c.597-.38 1.162-.168.707.246z"/>
+      </svg>
+    </a>
+
+    <!-- Discord -->
+    <a href="https://discord.com/invite/P9TftFvbuy" target="_blank">
+      <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+        <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3853-.3969-.8748-.6083-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8851 1.515.0699.0699 0 00-.032.0277C.5336 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0775.0105c.1202.099.246.1981.372.2914a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6061 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-.7242 0-1.327-.6684-1.327-1.49244s.5939-1.4922 1.327-1.4922c.7348 0 1.332.6677 1.332 1.4922 0 .824-.5972 1.4924-1.332 1.4924zm7.9748 0c-.7243 0-1.327-.6684-1.327-1.4924 0-.824.6028-1.4922 1.327-1.4922.7232 0 1.327.6684 1.327 1.4922 0 .824-.6035 1.4924-1.327 1.4924Z"/>
+      </svg>
+    </a>
+  </div>
+</div>
+
+<div class="container">
+  <h1>uSer395x</h1>
+  <img src="https://cdn.discordapp.com/icons/1383273823914164367/a_5708194b219d57ece701991713277aee.gif?size=80" class="pfp">
+  <div class="grid">
+    <a href="Downloads.html" class="card"><h3>Downloads</h3><p>Softwares & Plugins</p></a>
+    <a href="Extensions.html" class="card"><h3>Extensions</h3><p>Extensions/Scripts</p></a>
+    <a href="About.html" class="card"><h3>About</h3><p>Who I am & what I do</p></a>
+    <a href="Safety.html" class="card"><h3>Safety</h3><p>Inquiries</p></a>
+    <a href="Leaks.html" class="card"><h3>Leaks</h3><p>Exclusive Content</p></a>
+  </div>
+</div>
+
+<footer>© 2026 uSer395x</footer>
+
+<!-- GLOBAL SEARCH OVERLAY -->
+<div id="globalSearchOverlay" class="global-search-overlay">
+  <div class="search-content">
+    <div class="search-results-list" id="globalSearchResults"></div>
+    <div id="globalNoResults" class="no-results-message" style="display:none;">
+      No matching items found.
+    </div>
+  </div>
+</div>
+
+<!-- SEARCH DATA – add items from all pages here -->
+<div id="searchData" style="display:none;">
+  <!-- Downloads -->
+  <div class="search-item" data-name="After Effects" data-link="Downloads.html">After Effects - Downloads</div>
+  <div class="search-item" data-name="Premiere Pro" data-link="Downloads.html#premiere-pro">Premiere Pro - Downloads</div>
+  <div class="search-item" data-name="Resources Pack" data-link="Downloads.html#resources-pack">Resources Pack - Downloads</div>
+  <div class="search-item" data-name="After Effects" data-link="Downloads.html#after-effects">After Effects - Downloads</div>
+  <!-- Extensions -->
+  <div class="search-item" data-name="AE Quick Tools" data-link="Extensions/#video">AE Quick Tools - Extensions</div>
+  <div class="search-item" data-name="Tab Suspender" data-link="Extensions/#productivity">Tab Suspender - Extensions</div>
+  <div class="search-item" data-name="Mega Link Manager" data-link="Extensions/#download">Mega Link Manager - Extensions</div>
+
+  <!-- About -->
+  <div class="search-item" data-name="About" data-link="About.html">About uSer395x</div>
+
+  <!-- Safety -->
+  <div class="search-item" data-name="Safety" data-link="Safety.html">Safety Guidelines</div>
+
+  <!-- Leaks -->
+  <div class="search-item" data-name="Leaks" data-link="Leaks.html">Leaks - Exclusive Content</div>
+</div>
+
+<script>
+const searchInput = document.getElementById("globalSearchInput");
+const overlay = document.getElementById("globalSearchOverlay");
+const resultsContainer = document.getElementById("globalSearchResults");
+const noResults = document.getElementById("globalNoResults");
+
+// Grab all search items
+const searchItems = Array.from(document.querySelectorAll("#searchData .search-item")).map(item => {
+  return {
+    name: item.dataset.name.toLowerCase(),
+    link: item.dataset.link,
+    keywords: item.dataset.name.toLowerCase().split(/[\s,-]+/)
+  };
+});
+
+function performSearch() {
+  const query = searchInput.value.trim().toLowerCase();
+  resultsContainer.innerHTML = "";
+  noResults.style.display = "none";
+
+  if (!query) {
+    overlay.classList.remove("active");
+    return;
+  }
+
+  overlay.classList.add("active");
+
+  let found = 0;
+
+  searchItems.forEach(item => {
+    const matchesName = item.name.includes(query);
+    const matchesKeyword = item.keywords.some(k => k.includes(query));
+
+    if (matchesName || matchesKeyword) {
+      found++;
+      const itemEl = document.createElement("div");
+      itemEl.className = "search-result-item";
+      itemEl.textContent = item.name
+        .split(" ")
+        .map(w => w[0].toUpperCase() + w.slice(1))
+        .join(" ");
+
+      itemEl.addEventListener("click", () => {
+        window.location.href = item.link;
+      });
+
+      resultsContainer.appendChild(itemEl);
+    }
+  });
+
+  if (found === 0) {
+    noResults.style.display = "block";
+  }
+}
+
+searchInput.addEventListener("input", performSearch);
+
+searchInput.addEventListener("keydown", e => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    const firstResult = resultsContainer.querySelector(".search-result-item");
+    if (firstResult) firstResult.click();
+  }
+});
+
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") {
+    overlay.classList.remove("active");
+    searchInput.value = "";
+  }
+});
+
+overlay.addEventListener("click", e => {
+  if (e.target === overlay) {
+    overlay.classList.remove("active");
+    searchInput.value = "";
+  }
+});
+</script>
+
+</body>
+</html>

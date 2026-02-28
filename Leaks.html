@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leaks - uSer395x</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Roboto Mono', monospace;
+    background: linear-gradient(135deg, #192433, #16181b);
+    color: #e0e0e0;
+    min-height: 100vh;
+    line-height: 1.4;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 100px auto 50px;
+    padding: 0 12px;
+  }
+
+  h1.title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.2rem;
+    letter-spacing: 3px;
+    text-align: center;
+    color: #ffffff;
+    text-shadow: 0 0 15px rgba(255, 0, 0, 0.35);
+    margin-bottom: 30px;
+  }
+
+  section {
+    margin-bottom: 35px;
+  }
+
+  h2.section-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.65rem;
+    color: #ffffff;
+    margin: 25px 0 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
+
+  .leak-item {
+    padding: 9px 14px;
+    margin: 6px 0;
+    background: rgba(255,255,255,0.015);
+    border-left: 3px solid rgba(255, 0, 0, 0.25);
+    border-radius: 5px;
+    transition: background 0.18s ease;
+  }
+
+  .leak-item:hover {
+    background: rgba(255, 0, 0, 0.06);
+  }
+
+  .leak-name {
+    font-size: 1.08rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 4px;
+  }
+
+  .leak-links {
+    font-size: 0.9rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .leak-links a {
+    color: #00d4ff;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .leak-links a:hover {
+    color: #8b0000;
+    text-decoration: underline;
+  }
+
+  .leak-links span.separator {
+    color: rgba(255,255,255,0.35);
+    margin: 0 6px;
+  }
+
+  .info-note {
+    margin: 20px auto 0;
+    max-width: 640px;
+    padding: 10px 14px;
+    background: rgba(255, 0, 0, 0.06);
+    border: 1px solid rgba(255, 0, 0, 0.2);
+    border-radius: 6px;
+    font-size: 0.86rem;
+    color: #ffb0b0;
+    text-align: center;
+  }
+
+  .back-btn {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    padding: 6px 12px;
+    background: #00d4ff0f;
+    color: #00d4ff;
+    border: 1px solid #00d4ff33;
+    border-radius: 6px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 600;
+    font-size: 0.88rem;
+    text-decoration: none;
+    z-index: 1000;
+    transition: all 0.2s ease;
+  }
+
+  .back-btn:hover {
+    background: rgba(255, 0, 0, 0.3);
+    transform: translateX(-2px);
+  }
+
+  @media (max-width: 768px) {
+    h1.title { font-size: 1.9rem; margin-bottom: 25px; }
+    h2.section-title { font-size: 1.45rem; margin: 20px 0 8px; }
+    .container { margin-top: 80px; padding: 0 10px; }
+    .leak-item { padding: 8px 12px; margin: 5px 0; }
+    .leak-name { font-size: 1.02rem; }
+    .leak-links { font-size: 0.88rem; gap: 8px; flex-direction: column; align-items: flex-start; }
+    .leak-links span.separator { display: none; }
+  }
+</style>
+</head>
+
+<body>
+
+<a href="index.html" class="back-btn">← Back</a>
+
+<div class="container">
+  <h1 class="title">Leaks By uSer395x</h1>
+
+  <section id="example">
+    <h2 class="section-title">Example Leaks</h2>
+
+    <div class="leak-item">
+      <div class="leak-name">Example Leak 1</div>
+      <div class="leak-links">
+        <a href="https://example.com" target="_blank">Link 1</a>
+        <span class="separator">/</span>
+        <a href="https://example.com" target="_blank">Link 2</a>
+      </div>
+    </div>
+
+    <div class="leak-item">
+      <div class="leak-name">Example Leak 2</div>
+      <div class="leak-links">
+        <a href="https://example.com" target="_blank">Link</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="info-note">
+    This is just an example. When You Approve I'll Add everything in your discord server.
+  </div>
+</div>
+
+</body>
+</html>
