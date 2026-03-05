@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Software - uSer395x</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Roboto Mono', monospace;
+      background: radial-gradient(circle at 50% 20%, #18002a 0%, #06000f 70%);
+      color: #d0d0ff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      background: rgba(10,0,20,0.65);
+      backdrop-filter: blur(16px) saturate(180%);
+      border-bottom: 1px solid rgba(124,58,237,0.18);
+      box-shadow: 0 4px 30px rgba(0,0,0,0.5);
+    }
+
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, #00d4ff, #c4a0ff, #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .nav-item {
+      padding: 10px 18px;
+      border-radius: 10px;
+      transition: all 0.35s ease;
+      cursor: pointer;
+    }
+
+    .nav-item:hover {
+      background: linear-gradient(135deg, rgba(124,58,237,0.18), rgba(0,212,255,0.12));
+      box-shadow: 0 0 20px rgba(124,58,237,0.4);
+      transform: translateY(-2px);
+    }
+
+    .nav-item a {
+      color: #d0c0ff;
+      text-decoration: none;
+      font-size: 1.05rem;
+      font-weight: 500;
+      letter-spacing: 1.2px;
+      display: block;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+    }
+
+    .nav-item:hover a {
+      color: #e0d0ff;
+      text-shadow: 0 0 15px #c4a0ff;
+    }
+
+    .discord-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 22px;
+      background: linear-gradient(135deg, #5865f2, #7c3aed);
+      color: white;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.98rem;
+      box-shadow: 0 4px 15px rgba(88,101,242,0.4);
+      transition: all 0.3s ease;
+    }
+
+    .discord-btn:hover {
+      background: linear-gradient(135deg, #4752c4, #5a3ed9);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(88,101,242,0.6);
+    }
+
+    /* Space for fixed navbar */
+    .page-content {
+      padding-top: 120px;
+    }
+
+    /* ──────────────────────────────────────────────
+       YOUR ORIGINAL DOWNLOADS PAGE STYLES
+    ────────────────────────────────────────────── */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+
+    h1.title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.6rem;
+      text-align: center;
+      letter-spacing: 5px;
+      background: linear-gradient(90deg, #00eaff, #c4a0ff, #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 30px rgba(124,58,237,0.6);
+      margin-bottom: 30px;
+    }
+
+    .filter-bar {
+      text-align: right;
+      margin-bottom: 25px;
+      padding-right: 8px;
+    }
+
+    .filter-btn {
+      margin-left: 8px;
+      padding: 7px 14px;
+      background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(0,212,255,0.12));
+      color: #c4a0ff;
+      border: 1px solid rgba(196,160,255,0.25);
+      border-radius: 8px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      backdrop-filter: blur(6px);
+    }
+
+    .filter-btn:hover {
+      background: linear-gradient(135deg, rgba(124,58,237,0.45), rgba(0,212,255,0.28));
+      color: #e0d0ff;
+      border-color: rgba(196,160,255,0.5);
+      box-shadow: 0 0 18px rgba(124,58,237,0.35);
+      transform: translateY(-1px);
+    }
+
+    .filter-btn.active {
+      background: linear-gradient(135deg, #7c3aed 0%, #00d4ff 100%);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.3);
+      box-shadow: 0 0 22px rgba(124,58,237,0.7),
+                  0 0 40px rgba(0,212,255,0.4);
+      transform: translateY(-1px) scale(1.04);
+      text-shadow: 0 0 8px rgba(255,255,255,0.7);
+    }
+
+    .filter-btn.active:hover {
+      box-shadow: 0 0 28px rgba(124,58,237,0.9),
+                  0 0 50px rgba(0,212,255,0.6);
+      transform: translateY(-1px) scale(1.06);
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .poster-card {
+      position: relative;
+      height: 220px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #0f0825;
+      border: 1px solid rgba(196,160,255,0.16);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+      transition: all 0.35s ease;
+      cursor: pointer;
+    }
+
+    .poster-card:hover {
+      transform: scale(1.09) translateY(-10px);
+      box-shadow: 0 16px 50px rgba(124,58,237,0.4),
+                  inset 0 0 30px rgba(196,160,255,0.1);
+      z-index: 10;
+    }
+
+    .poster-bg {
+      position: absolute;
+      inset: 0;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.65;
+      transition: opacity 0.35s;
+    }
+
+    .poster-card:hover .poster-bg { opacity: 0.88; }
+
+    .poster-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 35%, rgba(6,0,15,0.95) 70%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 15px;
+    }
+
+    .poster-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.25rem;
+      color: #ffffff;
+      text-shadow: 0 0 15px #7c3aed;
+      margin-bottom: 6px;
+      line-height: 1.2;
+    }
+
+    .poster-version {
+      font-size: 0.82rem;
+      color: #c4a0ff;
+      margin-bottom: 8px;
+      opacity: 0.85;
+      line-height: 1.2;
+    }
+
+    .download-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .dl-btn {
+      flex: 1;
+      min-width: 80px;
+      padding: 5px 10px;
+      background: linear-gradient(135deg, #00d4ff, #7c3aed);
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .dl-btn:hover {
+      background: linear-gradient(135deg, #c4a0ff, #ff6ec7);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(196,160,255,0.4);
+    }
+
+    .note {
+      text-align: center;
+      margin: 40px auto 0;
+      max-width: 700px;
+      padding: 12px;
+      background: rgba(0,212,255,0.06);
+      border: 1px solid rgba(0,212,255,0.25);
+      border-radius: 8px;
+      color: #b0e0ff;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 900px) {
+      .gallery { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+      .poster-card { height: 200px; }
+      .poster-title { font-size: 1.1rem; }
+      .poster-version { font-size: 0.78rem; }
+      .dl-btn { font-size: 0.75rem; padding: 5px 8px; }
+      .filter-bar { text-align: center; }
+      .filter-btn { margin: 5px 4px; padding: 6px 12px; font-size: 0.82rem; }
+      h1.title { font-size: 2.2rem; margin-bottom: 25px; }
+    }
+
+    @media (max-width: 600px) {
+      .poster-card { height: 180px; }
+      .poster-title { font-size: 1rem; }
+      .poster-version { font-size: 0.75rem; margin-bottom: 6px; }
+      .dl-btn { padding: 4px 8px; font-size: 0.72rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top navbar - stays fixed on all pages -->
+  <div class="navbar">
+    <div class="logo">uSer395x</div>
+
+    <div class="nav-links">
+      <div class="nav-item"><a href="index.html#hero">Home</a></div>
+      <div class="nav-item"><a href="Software.html">Software</a></div>
+       <div class="nav-item"><a href="Plugins.html">Plugins</a></div>
+      <div class="nav-item"><a href="Extensions.html">Extensions</a></div>
+      <div class="nav-item"><a href="About.html">About</a></div>
+      <div class="nav-item"><a href="Safety.html">Safety</a></div>
+      <div class="nav-item"><a href="Leaks.html">Leaks</a></div>
+    </div>
+
+    <a href="https://discord.com/invite/P9TftFvbuy" class="discord-btn" target="_blank">
+      Join Discord
+    </a>
+  </div>
+
+  <div class="page-content">
+    <div class="container">
+      <h1 class="title">Software</h1>
+
+      <div class="filter-bar">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="After effects">After effects</button>
+        <button class="filter-btn" data-filter="Premiere Pro">Premier Pro</button>
+        <button class="filter-btn" data-filter="Media Encoder">Media Encoder</button>
+        <button class="filter-btn" data-filter="Autodesk">Autodesk</button>
+        <button class="filter-btn" data-filter="Topaz labs">Topaz labs</button>
+        <button class="filter-btn" data-filter="Bridge">Bridge</button>
+        <button class="filter-btn" data-filter="JetBrains">JetBrains</button>
+        <button class="filter-btn" data-filter="Foundry">Foundry</button>
+        <button class="filter-btn" data-filter="Photoshop">Photoshop</button>
+        <button class="filter-btn" data-filter="Extras">Extra's</button>
+      </div>
+
+      <div class="gallery">
+
+        <!-- After Effects CS6 -->
+        <div class="poster-card" data-category="After effects">
+          <div class="poster-bg" style="background-image: url('https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/adobe-after-effects-icon.svg');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">After Effects</div>
+            <div class="poster-version">CS6</div>
+            <div class="download-buttons">
+              <a href="https://mega.nz/file/VcRiWCLT#MvEeaUxyF1U8aBM8lqnZMR0E2MPugdzE7uzXnquoxU0" class="dl-btn" target="_blank">Mega</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- After Effects 2018 -->
+        <div class="poster-card" data-category="After effects">
+          <div class="poster-bg" style="background-image: url('https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/adobe-after-effects-icon.svg');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">After Effects</div>
+            <div class="poster-version">2018</div>
+            <div class="download-buttons">
+              <a href="https://archive.org/details/adobe-after-effects-cc-2018" class="dl-btn" target="_blank">Archive</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- After Effects 2020 -->
+        <div class="poster-card" data-category="After effects">
+          <div class="poster-bg" style="background-image: url('https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/adobe-after-effects-icon.svg');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">After Effects</div>
+            <div class="poster-version">2020 v17.5</div>
+            <div class="download-buttons">
+              <a href="https://archive.org/details/adobe-after-effects-2020-v-17.5-u-ser-395x" class="dl-btn" target="_blank">Archive</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- After Effects 2023 -->
+        <div class="poster-card" data-category="After effects">
+          <div class="poster-bg" style="background-image: url('https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/adobe-after-effects-icon.svg');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">After Effects</div>
+            <div class="poster-version">2023 v23.2.1.3</div>
+            <div class="download-buttons">
+              <a href="https://mega.nz/file/8Yp1QR5J#tUtukYKSju-FRVXo5SnHdpCQOagZSVkQPErZ1Jr5D14" class="dl-btn" target="_blank">Mega</a>
+              <a href="https://archive.org/details/adobe-after-effects-v-23.2.1.3" class="dl-btn" target="_blank">Archive</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Premiere Pro 2020 -->
+        <div class="poster-card" data-category="Premiere Pro">
+          <div class="poster-bg" style="background-image: url('https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/adobe-premiere-pro-icon.svg');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">Premiere Pro</div>
+            <div class="poster-version">2020 v14.3</div>
+            <div class="download-buttons">
+              <a href="https://archive.org/details/adobe-premiere-pro-2020-v-14.3-pre-activated" class="dl-btn" target="_blank">Mega</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Premiere Pro 2023 -->
+        <div class="poster-card" data-category="Premiere Pro">
+          <div class="poster-bg" style="background-image: url('https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/adobe-premiere-pro-icon.svg');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">Premiere Pro</div>
+            <div class="poster-version">2023 v23.2.0</div>
+            <div class="download-buttons">
+              <a href="https://archive.org/details/adobe-premiere-pro-v-23.2-u-ser-395x" class="dl-btn" target="_blank">Archive</a>
+              <a href="https://mega.nz/file/tVRDGbaB#xYTy89nMC41-EM3-DUpGt22eQLrX5B4yNhfYm-GNwBA" class="dl-btn" target="_blank">Mega</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Audition 2023 -->
+        <div class="poster-card" data-category="Extras">
+          <div class="poster-bg" style="background-image: url('https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/adobe-audition-icon.svg');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">Audition</div>
+            <div class="poster-version">2023</div>
+            <div class="download-buttons">
+              <a href="https://www.mediafire.com/file/1wggrxinj16qtxa/Adobe_Audition_2023.rar/file" class="dl-btn" target="_blank">MediaFire</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Media Encoder 2020 -->
+        <div class="poster-card" data-category="Media Encoder">
+          <div class="poster-bg" style="background-image: url('https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/adobe-media-encoder-icon.svg');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">Media Encoder</div>
+            <div class="poster-version">2020 v14.3</div>
+            <div class="download-buttons">
+              <a href="https://archive.org/details/adobe-media-encoder-2020-v-14.3-u-ser-395x" class="dl-btn" target="_blank">Archive</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Media Encoder 2023 -->
+        <div class="poster-card" data-category="Media Encoder">
+          <div class="poster-bg" style="background-image: url('https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/adobe-media-encoder-icon.svg');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">Media Encoder</div>
+            <div class="poster-version">2023 v23.2</div>
+            <div class="download-buttons">
+              <a href="https://www.mediafire.com/file/hl9bs1mxocrm13w/Adobe+Media+Encoder+v23.2.rar/file" class="dl-btn" target="_blank">MediaFire</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Media Encoder 2024 -->
+        <div class="poster-card" data-category="Media Encoder">
+          <div class="poster-bg" style="background-image: url('https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/adobe-media-encoder-icon.svg');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">Media Encoder</div>
+            <div class="poster-version">2024</div>
+            <div class="download-buttons">
+              <a href="https://archive.org/details/adobe-media-encoder-2024" class="dl-btn" target="_blank">Archive</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Photoshop 2023 -->
+        <div class="poster-card" data-category="Photoshop">
+          <div class="poster-bg" style="background-image: url('https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/adobe-photoshop-icon.svg');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">Photoshop</div>
+            <div class="poster-version">2023</div>
+            <div class="download-buttons">
+              <a href="https://archive.org/details/adobe-photoshop-2023_202508" class="dl-btn" target="_blank">Archive</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bridge 2023 -->
+        <div class="poster-card" data-category="Bridge">
+          <div class="poster-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQq7u2h2QKr-BybFL2akAA5HfHPfpzjWo-IQg&s');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">Bridge</div>
+            <div class="poster-version">2023 v13.0.2</div>
+            <div class="download-buttons">
+              <a href="https://archive.org/details/adobe-bridge-2023-v-13.0.2-u-ser-395x" class="dl-btn" target="_blank">Archive</a>
+            </div>
+          </div>
+        </div>
+        <!-- Topaz labs -->
+        <div class="poster-card" data-category="Topaz labs">
+          <div class="poster-bg" style="background-image: url('https://cdn.prod.website-files.com/6005fac27a49a9cd477afb63/68af97376fbc83545d307491_icon-topaz-video.svg');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">Topaz Video</div>
+            <div class="poster-version">Ai Pro 6</div>
+            <div class="download-buttons">
+              <a href="https://www.mediafire.com/file/195c14874iadd00/Topaz_Video_AI_Pro.rar/file" class="dl-btn" target="_blank">Mediafire</a>
+            </div>
+          </div>
+        </div>
+        <div class="poster-card" data-category="Topaz labs">
+          <div class="poster-bg" style="background-image: url('https://cdn.prod.website-files.com/6005fac27a49a9cd477afb63/68af97376fbc83545d307491_icon-topaz-video.svg');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">Topaz Video</div>
+            <div class="poster-version">Ai Pro 7.1.1</div>
+            <div class="download-buttons">
+              <a href="https://www.mediafire.com/file/195c14874iadd00/Topaz_Video_AI_Pro.rar/file" class="dl-btn" target="_blank">Mediafire</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="poster-card" data-category="Topaz labs">
+          <div class="poster-bg" style="background-image: url('https://cdn.prod.website-files.com/6005fac27a49a9cd477afb63/68af97376fbc83545d307491_icon-topaz-video.svg');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">Topaz Video Enhance</div>
+            <div class="poster-version">Ai v2.6.4 +5Gb Topaz Model</div>
+            <div class="download-buttons">
+              <a href="https://archive.org/details/topaz-video-enhance-ai-v-2.6.4" class="dl-btn" target="_blank">Archive</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="poster-card" data-category="Topaz labs">
+          <div class="poster-bg" style="background-image: url('https://cdn.prod.website-files.com/6005fac27a49a9cd477afb63/68af97376fbc83545d307491_icon-topaz-video.svg');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">Topaz Video Enhance</div>
+            <div class="poster-version">Ai v2.6.0</div>
+            <div class="download-buttons">
+              <a href="https://archive.org/details/topaz-video-enhance-ai-2.6.0_202509" class="dl-btn" target="_blank">Archive</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="poster-card" data-category="Topaz labs">
+          <div class="poster-bg" style="background-image: url('https://cdn.prod.website-files.com/6005fac27a49a9cd477afb63/68af97376fbc83545d307491_icon-topaz-video.svg');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">Topaz Video</div>
+            <div class="poster-version">AI 3.4.3</div>
+            <div class="download-buttons">
+              <a href="https://archive.org/details/topaz-video-ai-3.4.3-u-ser-395x" class="dl-btn" target="_blank">Archive</a>
+            </div>
+          </div>
+        </div>
+        <!-- JetBrains -->
+        <div class="poster-card" data-category="JetBrains">
+          <div class="poster-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTo9aaZl2iPltrP_k6MhjrBOSuYRdOFr131Tw&s.svg');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">JetBrains Intellij Idea Community Edition</div>
+            <div class="poster-version"> 2023.2.8</div>
+            <div class="download-buttons">
+              <a href="https://mega.nz/file/FAA1iLKa#FsqpWJwLRYhc4ouZ9lJSAd42HMfaAsfsJHT918krsVI" class="dl-btn" target="_blank">Mega</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="poster-card" data-category="JetBrains">
+          <div class="poster-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTo9aaZl2iPltrP_k6MhjrBOSuYRdOFr131Tw&s.svg');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">JetBrains PyCharm Community Edition</div>
+            <div class="poster-version"> 2023.2.8</div>
+            <div class="download-buttons">
+              <a href="https://www.mediafire.com/file/pgh4rqlq97t9jys/PyCharm+Community+Edition+v2023.2.8.rar/file" class="dl-btn" target="_blank">Mediafire</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="poster-card" data-category="JetBrains">
+          <div class="poster-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTo9aaZl2iPltrP_k6MhjrBOSuYRdOFr131Tw&s.svg');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">JetBrains CLion</div>
+            <div class="poster-version">2023.2</div>
+            <div class="download-buttons">
+              <a href="https://archive.org/details/jetbrains-clion-2023.2-u-ser-395x" class="dl-btn" target="_blank">Archive</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="poster-card" data-category="Extras">
+          <div class="poster-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREtV7dwzvAHr13vsXthJYvyDdvjIdthC52Vg&s');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">CapCut</div>
+            <div class="poster-version">v7.3.0 </div>
+            <div class="download-buttons">
+              <a href="https://archive.org/details/cap-cut-v-7.3.0-u-ser-395x" class="dl-btn" target="_blank">Archive</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="poster-card" data-category="Extras">
+          <div class="poster-bg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Wondershare_filmora_logo.svg/500px-Wondershare_filmora_logo.svg.png');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">Wondershare</div>
+            <div class="poster-version">14.5.20.12999</div>
+            <div class="download-buttons">
+              <a href="https://archive.org/details/wondershare-filmora-14.5.20.12999-u-ser-395x" class="dl-btn" target="_blank">Archive</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="poster-card" data-category="Extras">
+          <div class="poster-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZLkpZ0O2lHQqwyJ8_z1U9vFIqI536E6uxKg&s');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">Moho Pro</div>
+            <div class="poster-version">14</div>
+            <div class="download-buttons">
+              <a href="https://archive.org/details/moho-pro-14" class="dl-btn" target="_blank">Archive</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="poster-card" data-category="Extras">
+          <div class="poster-bg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Vegas_Pro_21_logo.svg/250px-Vegas_Pro_21_logo.svg.png');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">MAGIX Vegas Pro</div>
+            <div class="poster-version">17</div>
+            <div class="download-buttons">
+              <a href="https://archive.org/details/magix-vegas-pro-17" class="dl-btn" target="_blank">Archive</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="poster-card" data-category="Extras">
+          <div class="poster-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQN3ZsjSI_b_oKx9Vr13lLCOO7-IpP3Yk-zbg&s');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">SideFX Houdini FX</div>
+            <div class="poster-version">2022 (v19.5.303)</div>
+            <div class="download-buttons">
+              <a href="https://www.mediafire.com/file/h2z50k5b5ah81vd/SideFX_Houdini_FX_19.5.303.rar/file" class="dl-btn" target="_blank">Mediafire</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="poster-card" data-category="Autodesk">
+          <div class="poster-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrcQeGWdVP08ea-NlS1qJOs7-GrZkp6Eae1g&s');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">Autodesk 3ds Max</div>
+            <div class="poster-version">2023</div>
+            <div class="download-buttons">
+              <a href="https://mega.nz/file/1c5HWIpQ#FbSVUOTq6etaHjaVrtH1g0gwSc_-owWUrCOzwljkn20" class="dl-btn" target="_blank">Mega</a>
+              <a href="https://archive.org/details/autodesk-3ds-max-2023" class="dl-btn" target="_blank">Archive</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="poster-card" data-category="Autodesk">
+          <div class="poster-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrcQeGWdVP08ea-NlS1qJOs7-GrZkp6Eae1g&s');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">Autodesk Maya</div>
+            <div class="poster-version">2023</div>
+            <div class="download-buttons">
+              <a href="https://archive.org/details/autodesk-maya-2023" class="dl-btn" target="_blank">Archive</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="poster-card" data-category="Extras">
+          <div class="poster-bg" style="background-image: url('https://gimgs2.nohat.cc/thumb/f/640/image-line-fl-studio-fl-studio-logo-png--m2i8m2H7A0i8m2b1.jpg');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">Image-Line FL Studio Producer Edition</div>
+            <div class="poster-version">2023 v21.1.0</div>
+            <div class="download-buttons">
+              <a href="https://archive.org/details/image-line-fl-studio-producer-edition-v-21.1.0-2023" class="dl-btn" target="_blank">Archive</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="poster-card" data-category="Extras">
+          <div class="poster-bg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Microsoft_Office_logo_%282013%E2%80%932019%29.svg/500px-Microsoft_Office_logo_%282013%E2%80%932019%29.svg.png');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">Microsoft Office</div>
+            <div class="poster-version">2019 Pro Plus</div>
+            <div class="download-buttons">
+              <a href="https://archive.org/details/microsoft-office-2019-pro-plus-pre-activated" class="dl-btn" target="_blank">Archive</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="poster-card" data-category="Foundry">
+          <div class="poster-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZN6kk7H0uxl-SNcWXgLx2ZuzTZ-0y7KuAkg&s');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">The Foundry Nuke Studio</div>
+            <div class="poster-version">2022 (14.0v1)</div>
+            <div class="download-buttons">
+              <a href="https://www.mediafire.com/file/iima000fssofgh1/The+Foundry+Nuke+Studio+14.0v1.rar/file" class="dl-btn" target="_blank">Medifire</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="poster-card" data-category="Foundry">
+          <div class="poster-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwJ3On59JSbcKIWpYxETGIp9AjEv01m6DdJQ&s');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">The Foundry Katana</div>
+            <div class="poster-version">2022 5.0v4</div>
+            <div class="download-buttons">
+              <a href="https://archive.org/details/the-foundry-katana-5.0v-4" class="dl-btn" target="_blank">Archive</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="poster-card" data-category="Foundry">
+          <div class="poster-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRpGXPF3nW2eHfrxuo3b_KtgxIQ5Tq-t8aHQ&s');"></div>
+          <div class="poster-overlay">
+            <div class="poster-title">The Foundry Mari</div>
+            <div class="poster-version">2022 5.0v4</div>
+            <div class="download-buttons">
+              <a href="https://archive.org/details/the-foundry-mari-5.0v-4" class="dl-btn" target="_blank">Archive</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="note">
+        All files tested • Malware-free •
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.poster-card');
+    const allButton = document.querySelector('.filter-btn[data-filter="all"]');
+
+    let currentActiveFilter = "all";  
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const filter = btn.dataset.filter;
+
+        if (filter === "all") {
+          filterButtons.forEach(b => b.classList.remove('active'));
+          allButton.classList.add('active');
+          currentActiveFilter = "all";
+          showAllCards();
+          return;
+        }
+
+        if (currentActiveFilter === filter) {
+          filterButtons.forEach(b => b.classList.remove('active'));
+          allButton.classList.add('active');
+          currentActiveFilter = "all";
+          showAllCards();
+        } else {
+          // Select this new category
+          filterButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentActiveFilter = filter;
+          filterCards(filter);
+        }
+      });
+    });
+
+    function showAllCards() {
+      cards.forEach(card => {
+        card.style.display = 'block';
+      });
+    }
+
+    function filterCards(filterValue) {
+      cards.forEach(card => {
+        if (card.dataset.category.includes(filterValue)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Start with "All" visible
+    showAllCards();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Plugin • uSer395x</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Roboto Mono', monospace;
+      background: radial-gradient(circle at 50% 20%, #18002a 0%, #06000f 70%);
+      color: #d0d0ff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      background: rgba(10,0,20,0.65);
+      backdrop-filter: blur(16px) saturate(180%);
+      border-bottom: 1px solid rgba(124,58,237,0.18);
+      box-shadow: 0 4px 30px rgba(0,0,0,0.5);
+    }
+
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, #00d4ff, #c4a0ff, #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .nav-item {
+      padding: 10px 18px;
+      border-radius: 10px;
+      transition: all 0.35s ease;
+      cursor: pointer;
+    }
+
+    .nav-item:hover {
+      background: linear-gradient(135deg, rgba(124,58,237,0.18), rgba(0,212,255,0.12));
+      box-shadow: 0 0 20px rgba(124,58,237,0.4);
+      transform: translateY(-2px);
+    }
+
+    .nav-item a {
+      color: #d0c0ff;
+      text-decoration: none;
+      font-size: 1.05rem;
+      font-weight: 500;
+      letter-spacing: 1.2px;
+      display: block;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+    }
+
+    .nav-item:hover a {
+      color: #e0d0ff;
+      text-shadow: 0 0 15px #c4a0ff;
+    }
+
+    .discord-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 22px;
+      background: linear-gradient(135deg, #5865f2, #7c3aed);
+      color: white;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.98rem;
+      box-shadow: 0 4px 15px rgba(88,101,242,0.4);
+      transition: all 0.3s ease;
+    }
+
+    .discord-btn:hover {
+      background: linear-gradient(135deg, #4752c4, #5a3ed9);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(88,101,242,0.6);
+    }
+
+    .page-content {
+      padding-top: 120px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+
+    h1.title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.4rem;
+      text-align: center;
+      letter-spacing: 4px;
+      background: linear-gradient(90deg, #00eaff, #c4a0ff, #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 25px rgba(124,58,237,0.6);
+      margin: 1.5rem 0 1.8rem;
+    }
+
+    .controls-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      margin: 1.5rem 0 2rem;
+    }
+
+    .search-container {
+      flex: 1;
+      min-width: 260px;
+      max-width: 420px;
+    }
+
+    #searchInput {
+      width: 100%;
+      padding: 12px 16px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.98rem;
+      background: rgba(20,10,40,0.75);
+      border: 1px solid rgba(124,58,237,0.4);
+      border-radius: 12px;               /* curved rectangle corners */
+      color: #e0d0ff;
+      outline: none;
+      transition: all 0.3s;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.35);
+    }
+
+    #searchInput:focus {
+      border-color: #9c6aff;
+      box-shadow: 0 0 18px rgba(124,58,237,0.55);
+      background: rgba(30,15,60,0.9);
+    }
+
+    #searchInput::placeholder {
+      color: #a080d0;
+    }
+
+    .filter-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .filter-btn {
+      padding: 8px 16px;
+      background: linear-gradient(135deg, rgba(124,58,237,0.18), rgba(0,212,255,0.1));
+      color: #c4a0ff;
+      border: 1px solid rgba(196,160,255,0.22);
+      border-radius: 10px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.86rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      backdrop-filter: blur(6px);
+      white-space: nowrap;
+    }
+
+    .filter-btn:hover {
+      background: linear-gradient(135deg, rgba(124,58,237,0.4), rgba(0,212,255,0.25));
+      color: white;
+      box-shadow: 0 0 16px rgba(124,58,237,0.4);
+      transform: translateY(-1px);
+    }
+
+    .filter-btn.active {
+      background: linear-gradient(135deg, #7c3aed, #00d4ff);
+      color: white;
+      border: none;
+      box-shadow: 0 0 20px rgba(124,58,237,0.6);
+      transform: translateY(-1px) scale(1.03);
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 14px;
+      padding-bottom: 3rem;
+    }
+
+    .card {
+      position: relative;
+      height: 260px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #0f0825;
+      border: 1px solid rgba(196,160,255,0.16);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.55);
+      transition: all 0.35s ease;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: scale(1.07) translateY(-8px);
+      box-shadow: 0 14px 45px rgba(124,58,237,0.4),
+                  inset 0 0 25px rgba(196,160,255,0.08);
+    }
+
+    .card-bg {
+      position: absolute;
+      inset: 0;
+      background-size: 65%;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.6;
+      transition: opacity 0.4s;
+    }
+
+    .card:hover .card-bg { opacity: 0.9; }
+
+    .card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 35%, rgba(6,0,15,0.94) 68%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 12px;
+    }
+
+    .card-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.1rem;
+      color: #ffffff;
+      text-shadow: 0 0 12px #7c3aed;
+      margin-bottom: 4px;
+    }
+
+    .card-version {
+      font-size: 0.78rem;
+      color: #c4a0ff;
+      margin-bottom: 8px;
+      opacity: 0.9;
+    }
+
+    .download-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+
+    .dl-btn {
+      padding: 5px 12px;
+      background: linear-gradient(135deg, #00d4ff, #7c3aed);
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-align: center;
+      transition: all 0.3s;
+      min-width: 70px;
+      flex: 0 1 auto;
+    }
+
+    .download-group:has(.dl-btn:only-child) .dl-btn {
+      flex: 1 1 100%;
+      max-width: 140px;
+      margin: 0 auto;
+    }
+
+    .dl-btn:hover {
+      background: linear-gradient(135deg, #c4a0ff, #ff6ec7);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(196,160,255,0.4);
+    }
+
+    .note {
+      text-align: center;
+      margin: 2.5rem auto 3rem;
+      max-width: 680px;
+      padding: 10px;
+      background: rgba(0,212,255,0.05);
+      border: 1px solid rgba(0,212,255,0.22);
+      border-radius: 8px;
+      color: #b0e0ff;
+      font-size: 0.88rem;
+    }
+
+    @media (max-width: 820px) {
+      .controls-bar {
+        flex-direction: column;
+        gap: 18px;
+      }
+      .search-container {
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .navbar { padding: 15px 20px; }
+      .logo { font-size: 1.3rem; }
+      .nav-item { padding: 8px 14px; }
+      h1.title { font-size: 2rem; }
+      .gallery { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+      .card { height: 220px; }
+      .dl-btn { font-size: 0.7rem; padding: 4px 8px; min-width: 65px; }
+      #searchInput { padding: 11px 14px; font-size: 0.94rem; }
+    }
+  </style>
+</head>
+<body>
+
+
+  <div class="navbar">
+    <div class="logo">uSer395x</div>
+
+    <div class="nav-links">
+      <div class="nav-item"><a href="index.html#hero">Home</a></div>
+      <div class="nav-item"><a href="Software.html">Software</a></div>
+       <div class="nav-item"><a href="Plugins.html">Plugins</a></div>
+      <div class="nav-item"><a href="Extensions.html">Extensions</a></div>
+      <div class="nav-item"><a href="About.html">About</a></div>
+      <div class="nav-item"><a href="Safety.html">Safety</a></div>
+      <div class="nav-item"><a href="Leaks.html">Leaks</a></div>
+    </div>
+
+    <a href="https://discord.com/invite/P9TftFvbuy" class="discord-btn" target="_blank">
+      Join Discord
+    </a>
+  </div>
+
+  <div class="page-content">
+    <div class="container">
+      <h1 class="title">PLUGIN</h1>
+
+      <div class="controls-bar">
+        <div class="search-container">
+          <input type="text" id="searchInput" placeholder="Search plugins..." autocomplete="off">
+        </div>
+
+        <div class="filter-bar">
+          <button class="filter-btn active" data-filter="After effects">After Effects</button>
+          <button class="filter-btn" data-filter="OFX">OFX</button>
+          <button class="filter-btn" data-filter="Blender">Blender</button>
+          <button class="filter-btn" data-filter="Premiere">Premiere Pro</button>
+          <button class="filter-btn" data-filter="Maya">Maya</button>
+        </div>
+      </div>
+
+      <div class="gallery">
+
+          <div class="card" data-category="After effects">
+            <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcW4f1BfYWQIpteTzXJvbHNekkFMRz1Ti4Cw&s');"></div>
+            <div class="card-overlay">
+              <div class="card-title">Boris Fx Sapphire 2024</div>
+              <div class="card-version"></div>
+              <div class="download-group">
+                <a href="https://www.mediafire.com/file/5miyany8d6mfky6/Boris_FX_Sapphire_2024.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+              </div>
+            </div>
+          </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://ecommerce-api-qjjw.onrender.com/uploads/borisfx_Continuum2023_box_53207fc331.jpg');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Boris FX Continuum Complete 2024</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://www.mediafire.com/file/6rszgduwunsvsb0/Boris_FX_Continuum_Complete_2024.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVfNdzEZ20D5OXjKBqu2a1a7xrsxNHqBIGHQ&s');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Dehancer Pro v2.1.0</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://www.mediafire.com/file/mlxjmtt1yc68oun/Dehancer_Pro_AePr_v2.1.0_CE.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDJkDpVyJzPwDu3ijoZhoBVsLgOuAmJXXjfQ&s');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Crossphere Bokeh</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://www.mediafire.com/file/4fww23i5auyqwac/Crossphere_Bokeh.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThuM41D46dZo4F-yi2qPdUl9UxykrcP-ABGA&s');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Omino Suite</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://www.mediafire.com/file/uvj5onb3z7fd7lo/Omino_Suite.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcST2Vw7ZkCUtHZL8DzjbaHcTSzc-wjqCTDQKw&s');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Plugin Everything Deep Glow (v1 + v2)</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://www.mediafire.com/file/s7mdrcdtyaujewv/Plugin_Everything_Deep_Glow.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://cdn.openlm.com/wp-content/uploads/2025/12/Re-Vision-Effects.webp');"></div>
+          <div class="card-overlay">
+            <div class="card-title">RE:Vision RSMB 5</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://www.mediafire.com/file/h2vsm7bgig41br6/RE_Vision_RSMB_5.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://riztagar.com/wp-content/uploads/2025/03/RevisionFX-Twixtor-Pro_67e5b96527485.webp');"></div>
+          <div class="card-overlay">
+            <div class="card-title">RE:Vision Twixtor v7.0.3</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://www.mediafire.com/file/bdyqztlp54ddftm/Revision_Twixtor_v7.0.3.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://www.cadsoftwaredirect.com/wp-content/uploads/2025/08/red-giant.jpg');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Red Giant Magic Bullet Suite 2025</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://www.mediafire.com/file/4exnk3jnzq4acnj/Red_Giant_Magic_Bullet_Suite_2025.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://www.cadsoftwaredirect.com/wp-content/uploads/2025/08/red-giant.jpg');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Red Giant Universe 2025</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://www.mediafire.com/file/zjyzxasq92jhxv5/Red_Giant_Universe_2025.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://www.cadsoftwaredirect.com/wp-content/uploads/2025/08/red-giant.jpg');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Red Giant VFX Suite 2025</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://www.mediafire.com/file/p51x6zo0t55q706/Red_Giant_VFX_Suite_2025.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqxUNoX6A5rPz3L1nrlvDCTODs5yiz7YCHtw&s');"></div>
+          <div class="card-overlay">
+            <div class="card-title">VideoCopilot Twitch</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://www.mediafire.com/file/uae1s6ymgkpmnaf/Video_Copilot_Twitch_Plug-in.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqxUNoX6A5rPz3L1nrlvDCTODs5yiz7YCHtw&s');"></div>
+          <div class="card-overlay">
+            <div class="card-title">VideoCopilot Element 3D v2.2</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://www.mediafire.com/file/idkldqmgsxjos7k/Element_3D_v2.2.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqxUNoX6A5rPz3L1nrlvDCTODs5yiz7YCHtw&s');"></div>
+          <div class="card-overlay">
+            <div class="card-title">VideoCopilot Optical Flares</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://www.mediafire.com/file/s2gxwywnmbqfpgr/VideoCopilot_Optical_Flares.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQn8uYOIp4cYufMP9F-a9ns_iFwsQdmodQkaQ&s');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Cinema Spice Glitchify</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://www.mediafire.com/file/qx75lksqoed4qz7/Cinema_Spice_Glitchify.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://www.cadsoftwaredirect.com/wp-content/uploads/2025/08/red-giant.jpg');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Red Giant Trapcode Suite 2025</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://www.mediafire.com/file/hd5bhjxr6sx0lyc/Red_Giant_Trapcode_Suite_2025.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcST2Vw7ZkCUtHZL8DzjbaHcTSzc-wjqCTDQKw&s');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Plugin Everything Deep Glow 1 (AE 2025 Compatible)</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://www.mediafire.com/file/8l9s60nrfkuchhu/Plugin_Everything_Deep_Glow_1_%28AE_2025_Compatible%29.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkawvs7_YEqdt2wGMa3BtLWqsuhO1negQ2IA&s');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Vranos Lockdown 3</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://www.mediafire.com/file/adfyy6xm6hzdqyb/Vranos_Lockdown.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://i.ytimg.com/vi/EF6Nkab4y7A/mqdefault.jpg');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Irrealix LoopFlow v1.3.1</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://www.mediafire.com/file/nx45e3ct41fzmaz/LoopFlow_v1.3.1.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqxUNoX6A5rPz3L1nrlvDCTODs5yiz7YCHtw&s');"></div>
+          <div class="card-overlay">
+            <div class="card-title">VideoCopilot Pro Shaders 1 + 2</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://archive.org/details/video-copilot-pro-shaders-pack" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://cdn.prod.website-files.com/58c5480657a2703f67305c6c/632ac24c65970c13c70568bc_22.1-GTAE-1280.jpg');"></div>
+          <div class="card-overlay">
+            <div class="card-title">KeenTools GeoTracker</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://archive.org/details/keen-tools-geo-tracker" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcW4f1BfYWQIpteTzXJvbHNekkFMRz1Ti4Cw&s');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Boris FX Sapphire 2023</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://archive.org/details/boris-fx-sapphire-plug-ins-for-after-effects-2023" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://aescripts.com/media/catalog/product/cache/41c48f3ef0b52a38561130ac3096262e/G/E/GEOlayers3_Splash_1920x1080.png');"></div>
+          <div class="card-overlay">
+            <div class="card-title">GEOlayers 3</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://archive.org/details/geolayers-3" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNV2omvs80WaZN_BtXSr3T-TdWH2ztldmoxw&s');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Mettle Mantra v2.25.3</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://archive.org/details/mantra-v-2.25.3" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://aescripts.com/media/catalog/product/cache/41c48f3ef0b52a38561130ac3096262e/T/u/Tumbnail_for_promo_video-1920-1080.png');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Break It v1.6.0</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://archive.org/details/break-it-v-1.6.0" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfjEMNfijgYkOK-lfbVfX8wpoHih2M1CN4iQ&s');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Crate's Godrays</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://archive.org/details/crates-godrays" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://aescripts.com/media/catalog/product/cache/41c48f3ef0b52a38561130ac3096262e/a/u/autokroma__splash_images_v5__b_influx_logo_about_copy_16_9.png');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Autokroma Influx v1.4.2</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://archive.org/details/autokroma-influx-v-1.4.2" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://public-files.gumroad.com/rlxw7pl2djcedz1i2j8vdqqifll6');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Cinema Spice Polytrace</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://archive.org/details/cinema-spice-polytrace-u-ser-395x" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRl-8hotOQWieDbJ09SlAYSB_XEw6SAl8yItg&s');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Modulation 2 v2.1.0</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://archive.org/details/modulation-2-v-2.1.0-u-ser-395x" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtt_Nmw-zreOUtOxNhs0i6sI0rpISawx7hkA&s');"></div>
+          <div class="card-overlay">
+            <div class="card-title">AEJUICE - Cyberpunk HUD</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://archive.org/details/aejuice-cyberpunk-hud-u-ser-395x" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://static1.squarespace.com/static/598944b3f5e231b64a518aa6/t/672c56e0cf33ad70aece84f4/1763347348446/');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Plugin Everything HandyCam</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://archive.org/details/plugin-everything-handy-cam-u-ser-395x" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmRdO_sxiYYzsDUQVWetzi4XX06Yxx01Eciw&s');"></div>
+          <div class="card-overlay">
+            <div class="card-title">ftUVPass64 v5.5</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://archive.org/details/ft-uvpass-64-v-5.5-u-ser-395x" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://aescripts.com/media/catalog/product/cache/41c48f3ef0b52a38561130ac3096262e/a/e/aes_social_1.jpg');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Shadow Studio 3</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://archive.org/details/shadow-studio-3-u-ser-395x" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://media-blaceplugins.b-cdn.net/ds2-city-hq.png');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Depth Scanner v1.16</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://archive.org/details/depth-scanner-v-1.16-u-ser-395x" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://media-blaceplugins.b-cdn.net/ds2-city-hq.png');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Depth Scanner 2 v1.0.20</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://archive.org/details/depth-scanner-2-v-1.0.20-u-ser-395x_202511" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://aescripts.com/media/catalog/product/cache/41c48f3ef0b52a38561130ac3096262e/c/o/color-grade-prompter_1920-1080_1_1.png');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Color Grade Prompter v1.4</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://archive.org/details/color-grade-prompter-v-1.4-u-ser-395x" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4ciIWFL_Dx5kz8iuYq5yVRp7T-xJU6yJJ6A&s');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Rowbyte Plexus 3.2.0</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://archive.org/details/rowbyte-plexus-3.2.0-u-ser-395x" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTp_8WQcHX5l40erP6C0iCBm2lMyWppbW2c2A&s');"></div>
+          <div class="card-overlay">
+            <div class="card-title">BAO Bones v1.5</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://archive.org/details/bao-bones-v-1.5-u-ser-395x" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="After effects">
+          <div class="card-bg" style="background-image: url('https://i.vimeocdn.com/video/2011912519-c366c476bc4f1f3513a019aca79cb81b45327851f94a7d21054700bcf252fe79-d?f=webp');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Dragoy Tracery v1.1 </div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://archive.org/details/dragoy-tracery-v-1.1-u-ser-395x" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" data-category="OFX">
+          <div class="card-bg" style="background-image: url('https://ecommerce-api-qjjw.onrender.com/uploads/borisfx_Sapphire2023_box_73b08d4a52.jpg');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Boris FX Sapphire 2024</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://www.mediafire.com/file/n25cgada3nnzr5y/Boris_FX_Sapphire_Plug-ins_2024.03_for_OFX.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" data-category="OFX">
+          <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbYikqhQR3PjlW-Ky4fLw5cHKnvQRGN2pafA&s');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Boris FX Continuum Complete 2024</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://www.mediafire.com/file/dwcpsgxl0mtq6dy/Boris+FX+Continuum+Complete+(BCC)+Plug-ins+for+OFX+2024.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" data-category="OFX">
+          <div class="card-bg" style="background-image: url('https://ecommerce-api-qjjw.onrender.com/uploads/borisfx_Sapphire2023_box_73b08d4a52.jpg');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Boris FX Sapphire 2023</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://archive.org/details/boris-fx-sapphire-plug-ins-for-ofx-2023" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" data-category="OFX">
+          <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkieLttw5dxGUlYHvEotXOuqJ1L44Ps4V97g&s');"></div>
+          <div class="card-overlay">
+            <div class="card-title">RE:VisionFX Effections</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://archive.org/details/re-vision-fx-effections-ofx-u-ser-395x" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card" data-category="Blender">
+          <div class="card-bg" style="background-image: url('https://3d-kstudio.com/wp-content/uploads/2019/06/Sweep-Profile-PRO.jpg');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Sweep Modifier v2.0.1</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://cdn.discordapp.com/attachments/1411526939365347480/1411527051365584987/Sweep_Modifier_v2.0.1.rar?ex=69a63d01&is=69a4eb81&hm=ed35d7e67ead868085b510c9592b4897e97de7c5cee4333fda06f3ea8f7dd11d&" target="_blank" rel="noopener" cass="dl-btn">Download</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card" data-category="Blender">
+          <div class="card-bg" style="background-image: url('https://i.ytimg.com/vi/xtYs3PJfpLk/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLAKUB6bJoxIbdwXEte_PvrgxFhc4Q');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Shapeshifter v1.0</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://cdn.discordapp.com/attachments/1411526939365347480/1411527124904312902/Shapeshifter_v1.0.zip?ex=69a63d13&is=69a4eb93&hm=a3b757e76601fb1fb593c923a4298441953c31ca533b086719df0d8242f1043b&" target="_blank" rel="noopener" class="dl-btn">Download</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card" data-category="Blender">
+          <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuqaU2I6uymPj10HOvO_Bq3RdKmTXylZs4HQ&s');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Moving Skies Addon</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://www.mediafire.com/file/zx5q7jaozck2j3m/Moving+Skies+Addon.zip/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card" data-category="Blender">
+          <div class="card-bg" style="background-image: url('https://assets.superhivemarket.com/store/product/175468/image/1bd1f85165f80f2851e103f7b3456c92.jpg');"></div>
+          <div class="card-overlay">
+            <div class="card-title">3D Hair Brush v4.7.1</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://www.mediafire.com/file/0igtmyaigdv16l7/3D+Hair+Brush+v4.7.1.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card" data-category="Blender">
+          <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpiYW1uM0ClA9eK9OiI5fiqtSyrvjuEhAKJA&s');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Cinematic Compositor Addon v2</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://www.mediafire.com/file/lg82uoexwxadkgu/Cinematic+Compositor+Addon+v2.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card" data-category="Blender">
+          <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4u60zBjfkiaW59sYJVKgAClDIOs_TzCSCxg&s');"></div>
+          <div class="card-overlay">
+            <div class="card-title">GeoScatter</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://archive.org/details/geo-scatter-u-ser-395x" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card" data-category="Premiere">
+          <div class="card-bg" style="background-image: url('https://borisfx-com-res.cloudinary.com/image/upload/v1712406730/sapphire2024/MochaPro2024_clean_1.png');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Boris FX Sapphire 2024</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://www.mediafire.com/file/5miyany8d6mfky6/Boris_FX_Sapphire_2024.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card" data-category="Premiere">
+          <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLd-s8zuvrLvW9ucoUwF--j3DlnJfHFSdBrg&s');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Boris FX Continuum Complete 2024</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://www.mediafire.com/file/6rszgduwunsvsb0/Boris_FX_Continuum_Complete_2024.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card" data-category="Premiere">
+          <div class="card-bg" style="background-image: url('https://blog.dehancer.com/wp-content/uploads/2023/10/adobe-after-effects-premiere-plugin-2.0-release-optimised-1.jpg');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Dehancer Pro 2.1.0</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://www.mediafire.com/file/mlxjmtt1yc68oun/Dehancer_Pro_AePr_v2.1.0_CE.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card" data-category="Premiere">
+          <div class="card-bg" style="background-image: url('https://maxonassets.imgix.net/images/Magic_Bullet_Looks_UI.jpg?fm=webp&auto=format,compress&w=1920&h=1080&ar=16:9&fit=clip&crop=faces&q=80');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Red Giant Magic Bullet Suite 2025</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://www.mediafire.com/file/4exnk3jnzq4acnj/Red_Giant_Magic_Bullet_Suite_2025.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card" data-category="Premiere">
+          <div class="card-bg" style="background-image: url('https://maxonassets.imgix.net/images/Products/Universe/Universe_Presets.jpg?fm=webp&auto=format,compress&w=1920&h=1080&ar=16:9&fit=clip&crop=faces&q=80');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Red Giant Universe 2025</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://www.mediafire.com/file/zjyzxasq92jhxv5/Red_Giant_Universe_2025.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card" data-category="Premiere">
+          <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9p5f276iglr1LLmzFvMUetOy-6G3wuNzbNQ&s');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Red Giant VFX Suite 2025</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://www.mediafire.com/file/p51x6zo0t55q706/Red_Giant_VFX_Suite_2025.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card" data-category="Premiere">
+          <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR23nTT5b4Ij-cakHU9bxbxLli4hvf0NS0v9g&s');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Red Giant Trapcode Suite 2025</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://www.mediafire.com/file/hd5bhjxr6sx0lyc/Red_Giant_Trapcode_Suite_2025.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card" data-category="Premiere">
+          <div class="card-bg" style="background-image: url('https://borisfx-com-res.cloudinary.com/image/upload/q_auto,f_auto,fl_lossy/v1668176876/Marketing/Sapphire%202023/Sapphire2023Hero03_1.jpg');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Boris FX Sapphire 2023</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://archive.org/details/boris-fx-sapphire-plug-ins-for-after-effects-2023" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card" data-category="Premiere">
+          <div class="card-bg" style="background-image: url('https://aescripts.com/media/catalog/product/cache/71827bdbf68401caac80ba8bb4955ad4/a/e/aescripts_mantra_v2HD.jpg');"></div>
+          <div class="card-overlay">
+            <div class="card-title">Mettle Mantra v2.25.3</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://archive.org/details/mantra-v-2.25.3" target="_blank" rel="noopener"class="dl-btn">Archive</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card" data-category="Maya">
+          <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEmxvwHIOUW1x87abQwaFK5P0Lh1y8R1a2A&s');"></div>
+          <div class="card-overlay">
+            <div class="card-title">PENCIL+ v4.2.3</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://www.mediafire.com/file/hg9qtg4pi8iu2ri/Pencil++4.2.3.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card" data-category="Maya">
+          <div class="card-bg" style="background-image: url('https://create3dcharacters.com/files/content/zooTools/bg-videos/zooTitle02.png');"></div>
+          <div class="card-overlay">
+            <div class="card-title">ZOO TOOS PRO 2.9.4</div>
+            <div class="card-version"></div>
+            <div class="download-group">
+              <a href="https://archive.org/details/zoo-tools-pro-2.9.4" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+            </div>
+          </div>
+        </div>
+    
+
+      </div>
+
+      <div class="note">
+        All files tested • Malware-free • If you find a broken link, please report it to us.
+      </div>
+    </div>
+  </div>
+
+  <script>
+  
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.card');
+    const searchInput = document.getElementById('searchInput');
+
+    let currentActiveFilter = "After effects"; // default
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentActiveFilter = btn.dataset.filter;
+        applyFilterAndSearch();
+      });
+    });
+
+  
+    searchInput.addEventListener('input', () => {
+      applyFilterAndSearch();
+    });
+
+    function applyFilterAndSearch() {
+      const searchTerm = searchInput.value.toLowerCase().trim();
+
+      cards.forEach(card => {
+        const category = card.dataset.category;
+        const titleElement = card.querySelector('.card-title');
+        const title = titleElement ? titleElement.textContent.toLowerCase() : "";
+
+        const matchesCategory = (category === currentActiveFilter);
+        const matchesSearch = !searchTerm || title.includes(searchTerm);
+
+        card.style.display = (matchesCategory && matchesSearch) ? 'block' : 'none';
+      });
+    }
+
+    // Initial load
+    applyFilterAndSearch();
+  </script>
+
+</body>
+</html>

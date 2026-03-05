@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Plugin • uSer395x</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Roboto Mono', monospace;
+      background: radial-gradient(circle at 50% 20%, #18002a 0%, #06000f 70%);
+      color: #d0d0ff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      background: rgba(10,0,20,0.65);
+      backdrop-filter: blur(16px) saturate(180%);
+      border-bottom: 1px solid rgba(124,58,237,0.18);
+      box-shadow: 0 4px 30px rgba(0,0,0,0.5);
+    }
+
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, #00d4ff, #c4a0ff, #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .nav-item {
+      padding: 10px 18px;
+      border-radius: 10px;
+      transition: all 0.35s ease;
+      cursor: pointer;
+    }
+
+    .nav-item:hover {
+      background: linear-gradient(135deg, rgba(124,58,237,0.18), rgba(0,212,255,0.12));
+      box-shadow: 0 0 20px rgba(124,58,237,0.4);
+      transform: translateY(-2px);
+    }
+
+    .nav-item a {
+      color: #d0c0ff;
+      text-decoration: none;
+      font-size: 1.05rem;
+      font-weight: 500;
+      letter-spacing: 1.2px;
+      display: block;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+    }
+
+    .nav-item:hover a {
+      color: #e0d0ff;
+      text-shadow: 0 0 15px #c4a0ff;
+    }
+
+    .discord-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 22px;
+      background: linear-gradient(135deg, #5865f2, #7c3aed);
+      color: white;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.98rem;
+      box-shadow: 0 4px 15px rgba(88,101,242,0.4);
+      transition: all 0.3s ease;
+    }
+
+    .discord-btn:hover {
+      background: linear-gradient(135deg, #4752c4, #5a3ed9);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(88,101,242,0.6);
+    }
+
+    .page-content {
+      padding-top: 120px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+
+    h1.title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.4rem;
+      text-align: center;
+      letter-spacing: 4px;
+      background: linear-gradient(90deg, #00eaff, #c4a0ff, #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 25px rgba(124,58,237,0.6);
+      margin: 1.5rem 0 1.8rem;
+    }
+
+    .controls-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      margin: 1.5rem 0 2rem;
+    }
+
+    .search-container {
+      flex: 1;
+      min-width: 260px;
+      max-width: 420px;
+    }
+
+    #searchInput {
+      width: 100%;
+      padding: 12px 16px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.98rem;
+      background: rgba(20,10,40,0.75);
+      border: 1px solid rgba(124,58,237,0.4);
+      border-radius: 12px;               /* curved rectangle corners */
+      color: #e0d0ff;
+      outline: none;
+      transition: all 0.3s;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.35);
+    }
+
+    #searchInput:focus {
+      border-color: #9c6aff;
+      box-shadow: 0 0 18px rgba(124,58,237,0.55);
+      background: rgba(30,15,60,0.9);
+    }
+
+    #searchInput::placeholder {
+      color: #a080d0;
+    }
+
+    .filter-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .filter-btn {
+      padding: 8px 16px;
+      background: linear-gradient(135deg, rgba(124,58,237,0.18), rgba(0,212,255,0.1));
+      color: #c4a0ff;
+      border: 1px solid rgba(196,160,255,0.22);
+      border-radius: 10px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.86rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      backdrop-filter: blur(6px);
+      white-space: nowrap;
+    }
+
+    .filter-btn:hover {
+      background: linear-gradient(135deg, rgba(124,58,237,0.4), rgba(0,212,255,0.25));
+      color: white;
+      box-shadow: 0 0 16px rgba(124,58,237,0.4);
+      transform: translateY(-1px);
+    }
+
+    .filter-btn.active {
+      background: linear-gradient(135deg, #7c3aed, #00d4ff);
+      color: white;
+      border: none;
+      box-shadow: 0 0 20px rgba(124,58,237,0.6);
+      transform: translateY(-1px) scale(1.03);
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 14px;
+      padding-bottom: 3rem;
+    }
+
+    .card {
+      position: relative;
+      height: 260px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #0f0825;
+      border: 1px solid rgba(196,160,255,0.16);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.55);
+      transition: all 0.35s ease;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: scale(1.07) translateY(-8px);
+      box-shadow: 0 14px 45px rgba(124,58,237,0.4),
+                  inset 0 0 25px rgba(196,160,255,0.08);
+    }
+
+    .card-bg {
+      position: absolute;
+      inset: 0;
+      background-size: 65%;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.6;
+      transition: opacity 0.4s;
+    }
+
+    .card:hover .card-bg { opacity: 0.9; }
+
+    .card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 35%, rgba(6,0,15,0.94) 68%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 12px;
+    }
+
+    .card-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.1rem;
+      color: #ffffff;
+      text-shadow: 0 0 12px #7c3aed;
+      margin-bottom: 4px;
+    }
+
+    .card-version {
+      font-size: 0.78rem;
+      color: #c4a0ff;
+      margin-bottom: 8px;
+      opacity: 0.9;
+    }
+
+    .download-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+
+    .dl-btn {
+      padding: 5px 12px;
+      background: linear-gradient(135deg, #00d4ff, #7c3aed);
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-align: center;
+      transition: all 0.3s;
+      min-width: 70px;
+      flex: 0 1 auto;
+    }
+
+    .download-group:has(.dl-btn:only-child) .dl-btn {
+      flex: 1 1 100%;
+      max-width: 140px;
+      margin: 0 auto;
+    }
+
+    .dl-btn:hover {
+      background: linear-gradient(135deg, #c4a0ff, #ff6ec7);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(196,160,255,0.4);
+    }
+
+    .note {
+      text-align: center;
+      margin: 2.5rem auto 3rem;
+      max-width: 680px;
+      padding: 10px;
+      background: rgba(0,212,255,0.05);
+      border: 1px solid rgba(0,212,255,0.22);
+      border-radius: 8px;
+      color: #b0e0ff;
+      font-size: 0.88rem;
+    }
+
+    @media (max-width: 820px) {
+      .controls-bar {
+        flex-direction: column;
+        gap: 18px;
+      }
+      .search-container {
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .navbar { padding: 15px 20px; }
+      .logo { font-size: 1.3rem; }
+      .nav-item { padding: 8px 14px; }
+      h1.title { font-size: 2rem; }
+      .gallery { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+      .card { height: 220px; }
+      .dl-btn { font-size: 0.7rem; padding: 4px 8px; min-width: 65px; }
+      #searchInput { padding: 11px 14px; font-size: 0.94rem; }
+    }
+  </style>
+</head>
+<body>
+
+
+  <div class="navbar">
+    <div class="logo">uSer395x</div>
+
+    <div class="nav-links">
+      <div class="nav-item"><a href="index.html#hero">Home</a></div>
+      <div class="nav-item"><a href="Software.html">Software</a></div>
+      <div class="nav-item"><a href="Plugins.html">Plugins</a></div>
+      <div class="nav-item"><a href="Extensions.html">Extensions</a></div>
+      <div class="nav-item"><a href="About.html">About</a></div>
+      <div class="nav-item"><a href="Safety.html">Safety</a></div>
+      <div class="nav-item"><a href="Leaks.html">Leaks</a></div>
+    </div>
+
+    <a href="https://discord.com/invite/P9TftFvbuy" class="discord-btn" target="_blank">
+      Join Discord
+    </a>
+  </div>
+
+  <div class="page-content">
+    <div class="container">
+      <h1 class="title">Extensions & Scripts</h1>
+
+      <div class="controls-bar">
+        <div class="search-container">
+          <input type="text" id="searchInput" placeholder="Search Extensions..." autocomplete="off">
+        </div>
+        
+        <div class="filter-bar">
+          <button class="filter-btn active" data-filter="Extensions">Extensions</button>
+          <button class="filter-btn" data-filter="Scripts">Scripts</button>
+        </div>
+      </div>
+
+      <div class="gallery">
+
+          <div class="card" data-category="Extensions">
+            <div class="card-bg" style="background-image: url('https://djordanmedia.com/cdn/shop/files/ESSENTIALFXCOlorized.jpg?v=1759296593');"></div>
+            <div class="card-overlay">
+              <div class="card-title">DJordanMedia EssentialFX 4.0 for After Effects</div>
+              <div class="card-version"></div>
+              <div class="download-group">
+                <a href="https://archive.org/details/djordan-media-essential-fx-for-after-effects-u-ser-395x" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+              </div>
+            </div>
+          </div>
+    
+
+          <div class="card" data-category="Extensions">
+            <div class="card-bg" style="background-image: url('https://i.ytimg.com/vi/OIXaFeVMEkM/sddefault.jpg');"></div>
+            <div class="card-overlay">
+              <div class="card-title">Motion Tools Pro v2.0.8</div>
+              <div class="card-version"></div>
+              <div class="download-group">
+                <a href="https://archive.org/details/motion-tools-pro-v-2.0.8-u-ser-395x" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+              </div>
+            </div>
+          </div>
+    
+
+          <div class="card" data-category="Extensions">
+            <div class="card-bg" style="background-image: url('https://i.ytimg.com/vi/aJpDIu4P9QY/maxresdefault.jpg');"></div>
+            <div class="card-overlay">
+              <div class="card-title">Datamosh v2.6.1</div>
+              <div class="card-version"></div>
+              <div class="download-group">
+                <a href="https://archive.org/details/datamosh-v-2.6.1-u-ser-395x" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+              </div>
+            </div>
+          </div>
+    
+
+          <div class="card" data-category="Extensions">
+            <div class="card-bg" style="background-image: url('https://aescripts.com/media//author/author_media/edgard-st-felix/products/bvdgfd.jpg');"></div>
+            <div class="card-overlay">
+              <div class="card-title">Camera3D Toolkit Pro v2.2.1</div>
+              <div class="card-version"></div>
+              <div class="download-group">
+                <a href="https://archive.org/details/camera-3-d-toolkit-pro-v-2.2.1-u-ser-395x" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+              </div>
+            </div>
+          </div>
+    
+          <div class="card" data-category="Extensions">
+            <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvMe8D-vjKmXQb4sLy4RTE9siB7aKQO-Oybg&s');"></div>
+            <div class="card-overlay">
+              <div class="card-title">Motion Bro Presets For After Effects</div>
+              <div class="card-version"></div>
+              <div class="download-group">
+                <a href="https://archive.org/details/motion-bro-presets-for-after-effects-u-ser-395x" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+              </div>
+            </div>
+          </div>
+    
+          <div class="card" data-category="Extensions">
+            <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4rHUjLVRl4fKqZbl5d3MNKV5ixAjcm2cs4Q&s');"></div>
+            <div class="card-overlay">
+              <div class="card-title">Mt. Mograph Boombox v27</div>
+              <div class="card-version"></div>
+              <div class="download-group">
+                <a href="https://archive.org/details/mt.-mograph-boombox-v-27-u-ser-395x" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+              </div>
+            </div>
+          </div>
+    
+          <div class="card" data-category="Extensions">
+            <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqmOUV4imYjiTw0zD1nj3NyyloVWh9PvDIKA&s');"></div>
+            <div class="card-overlay">
+              <div class="card-title">XOscillator Pro v1.0.0</div>
+              <div class="card-version"></div>
+              <div class="download-group">
+                <a href="https://archive.org/details/xoscillator-pro-v-1.0.0-u-ser-395x" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+              </div>
+            </div>
+          </div>
+    
+          <div class="card" data-category="Extensions">
+            <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6MzP3U3OJ8AqbFFs0F1fuT5rvbqNX7e2zwA&s');"></div>
+            <div class="card-overlay">
+              <div class="card-title">PrimeTools</div>
+              <div class="card-version"></div>
+              <div class="download-group">
+                <a href="https://archive.org/details/prime-tools-u-ser-395x" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+              </div>
+            </div>
+          </div>
+    
+          <div class="card" data-category="Extensions">
+            <div class="card-bg" style="background-image: url('https://aescripts.com/media/wysiwyg/renderTom/flow/interface-full.png');"></div>
+            <div class="card-overlay">
+              <div class="card-title">Flow v1.4.2</div>
+              <div class="card-version"></div>
+              <div class="download-group">
+                <a href="https://www.mediafire.com/file/zcnir1v4zu746v9/Flow_v1.4.2.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+              </div>
+            </div>
+          </div>
+    
+          <div class="card" data-category="Extensions">
+            <div class="card-bg" style="background-image: url('https://aescripts.com/media/wysiwyg/renderTom/flow/interface-full.png');"></div>
+            <div class="card-overlay">
+              <div class="card-title">Flow v1.5.2</div>
+              <div class="card-version"></div>
+              <div class="download-group">
+                <a href="https://www.mediafire.com/file/r0kit2hd4qejb39/Flow_v1.5.2.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+              </div>
+            </div>
+          </div>
+    
+          <div class="card" data-category="Scripts">
+            <div class="card-bg" style="background-image: url('https://aescripts.com/media/catalog/product/cache/41c48f3ef0b52a38561130ac3096262e/1/9/1920x1080_0_01_26_28_.png');"></div>
+            <div class="card-overlay">
+              <div class="card-title">Subtitle Pro v2.9.7 </div>
+              <div class="card-version"></div>
+              <div class="download-group">
+                <a href="https://archive.org/details/subtitle-pro-v-2.9.7-u-ser-395x" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+              </div>
+            </div>
+          </div>
+    
+          <div class="card" data-category="Scripts">
+            <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcgm-HVBX9xfvFibqZcGtnjld4mvp3TEjuWA&s');"></div>
+            <div class="card-overlay">
+              <div class="card-title">TextEvo 2 </div>
+              <div class="card-version"></div>
+              <div class="download-group">
+                <a href="https://archive.org/details/text-evo-2-u-ser-395x" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+              </div>
+            </div>
+          </div>
+    
+          <div class="card" data-category="Scripts">
+            <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJ8C8g0SGeS0RmeHS0KGv9ugImpp5zrrm8WQ&s');"></div>
+            <div class="card-overlay">
+              <div class="card-title">Ukramedia - Smart Bundle for After Effects </div>
+              <div class="card-version"></div>
+              <div class="download-group">
+                <a href="https://archive.org/details/ukramedia-smart-bundle-for-after-effects-u-ser-395x" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+              </div>
+            </div>
+          </div>
+    
+          <div class="card" data-category="Scripts">
+            <div class="card-bg" style="background-image: url('https://aescripts.com/media/catalog/product/cache/41c48f3ef0b52a38561130ac3096262e/p/t/pt_opensesame_social.jpg');"></div>
+            <div class="card-overlay">
+              <div class="card-title">Pt OpenSesame v1.6</div>
+              <div class="card-version"></div>
+              <div class="download-group">
+                <a href="https://archive.org/details/pt-open-sesame-v-1.6-u-ser-395x_202511" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+              </div>
+            </div>
+          </div>
+    
+          <div class="card" data-category="Scripts">
+            <div class="card-bg" style="background-image: url('https://aescripts.com/media/author/author_media/matin-kazerooni/products/menu_-_head_to_line_2_1.png');"></div>
+            <div class="card-overlay">
+              <div class="card-title">Head To Line v2.1</div>
+              <div class="card-version"></div>
+              <div class="download-group">
+                <a href="https://archive.org/details/head-to-line-v-2.1-u-ser-395x" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+              </div>
+            </div>
+          </div>
+    
+          <div class="card" data-category="Scripts">
+            <div class="card-bg" style="background-image: url('https://i.ytimg.com/vi/DirdxAW1ohg/maxresdefault.jpg');"></div>
+            <div class="card-overlay">
+              <div class="card-title">Move Anchor Point v4.1.2</div>
+              <div class="card-version"></div>
+              <div class="download-group">
+                <a href="https://archive.org/details/move-anchor-point-v-4.1.2-u-ser-395x" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+              </div>
+            </div>
+          </div>
+    
+          <div class="card" data-category="Scripts">
+            <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkmIdg705nIJkh6O2ZxF3XpgKBvWgXb_FD0A&s');"></div>
+            <div class="card-overlay">
+              <div class="card-title">Un-PreCompose v1.1</div>
+              <div class="card-version"></div>
+              <div class="download-group">
+                <a href="https://archive.org/details/un-pre-compose-v-1.1-u-ser-395x" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+              </div>
+            </div>
+          </div>
+    
+          <div class="card" data-category="Scripts">
+            <div class="card-bg" style="background-image: url('https://i.ytimg.com/vi/YNgP9_igdsk/maxresdefault.jpg');"></div>
+            <div class="card-overlay">
+              <div class="card-title">EaseCopy v1.7</div>
+              <div class="card-version"></div>
+              <div class="download-group">
+                <a href="https://archive.org/details/ease-copy-v-1.7-u-ser-395x" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+              </div>
+            </div>
+          </div>
+    
+          <div class="card" data-category="Scripts">
+            <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBC1fgZ6wU7RMBLMIYVL_--8vlP2WncgSzdw&s');"></div>
+            <div class="card-overlay">
+              <div class="card-title">Coco Color CoWorker v1.3</div>
+              <div class="card-version"></div>
+              <div class="download-group">
+                <a href="https://archive.org/details/coco-color-co-worker-v-1.3-u-ser-395x" target="_blank" rel="noopener" class="dl-btn">Archive</a>
+              </div>
+            </div>
+          </div>
+    
+          <div class="card" data-category="Scripts">
+            <div class="card-bg" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLrRQL6uNUb3TyCnfWzKyPewZ_GQB5CB1XBw&s');"></div>
+            <div class="card-overlay">
+              <div class="card-title">Uwu2x</div>
+              <div class="card-version"></div>
+              <div class="download-group">
+                <a href="https://www.mediafire.com/file/xg302jmpa4d3x5x/Uwu2x.rar/file" target="_blank" rel="noopener" class="dl-btn">Mediafire</a>
+              </div>
+            </div>
+          </div>
+    
+     </div>
+
+      <div class="note">
+        All files tested • Malware-free • If you find a broken link, please report it to us.
+      </div>
+    </div>
+  </div>
+  <script>
+  
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.card');
+    const searchInput = document.getElementById('searchInput');
+
+    let currentActiveFilter = "Extensions"; // default
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentActiveFilter = btn.dataset.filter;
+        applyFilterAndSearch();
+      });
+    });
+
+  
+    searchInput.addEventListener('input', () => {
+      applyFilterAndSearch();
+    });
+
+    function applyFilterAndSearch() {
+      const searchTerm = searchInput.value.toLowerCase().trim();
+
+      cards.forEach(card => {
+        const category = card.dataset.category;
+        const titleElement = card.querySelector('.card-title');
+        const title = titleElement ? titleElement.textContent.toLowerCase() : "";
+
+        const matchesCategory = (category === currentActiveFilter);
+        const matchesSearch = !searchTerm || title.includes(searchTerm);
+
+        card.style.display = (matchesCategory && matchesSearch) ? 'block' : 'none';
+      });
+    }
+
+    // Initial load
+    applyFilterAndSearch();
+  </script>  

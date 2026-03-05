@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>uSer395x</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:Arial, sans-serif;
+  color:#e0e0ff;
+  overflow-x:hidden;
+  background:#06000f;
+  background: radial-gradient(circle at 50% 50%, #0f001a 0%, #06000f 70%);
+  scrollbar-width: thin;
+  scrollbar-color: #7c3aed #111;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::-webkit-scrollbar{width:8px;}
+::-webkit-scrollbar-track{background:rgba(15,0,26,0.7);border-left:1px solid rgba(124,58,237,0.15);}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#7c3aed,#00d4ff,#c4a0ff);border-radius:10px;border:2px solid #06000f;box-shadow:0 0 12px #7c3aed,0 0 25px rgba(124,58,237,0.5);transition:all 0.3s ease;}
+::-webkit-scrollbar-thumb:hover{box-shadow:0 0 20px #7c3aed,0 0 40px #00d4ff;}
+
+/* GPU acceleration */
+.hero, .features, .main-content, .status {
+  transform: translateZ(0);
+  will-change: transform, opacity;
+}
+
+/* NAVBAR */
+.navbar{
+  position:fixed;top:0;left:0;width:100%;
+  padding:20px 40px;
+  display:flex;justify-content:space-between;align-items:center;
+  z-index:1000;
+  background:rgba(10,0,20,0.65);
+  backdrop-filter:blur(16px) saturate(180%);
+  border-bottom:1px solid rgba(124,58,237,0.18);
+  box-shadow:0 4px 30px rgba(0,0,0,0.5);
+}
+
+.logo{font-family:'Orbitron',sans-serif;font-size:1.5rem;font-weight:800;background:linear-gradient(90deg,#00d4ff,#c4a0ff,#7c3aed); -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+
+.nav-links{display:flex;gap:8px;align-items:center;}
+.nav-item{padding:10px 18px;border-radius:10px;transition:all 0.35s ease;cursor:pointer;}
+.nav-item:hover{background:linear-gradient(135deg,rgba(124,58,237,0.18),rgba(0,212,255,0.12));box-shadow:0 0 20px rgba(124,58,237,0.4);transform:translateY(-2px);}
+.nav-item a{color:#d0c0ff;text-decoration:none;font-size:1.05rem;font-weight:500;letter-spacing:1.2px;display:block;white-space:nowrap;transition:all 0.3s ease;}
+.nav-item:hover a{color:#e0d0ff;text-shadow:0 0 15px #c4a0ff;}
+
+.discord-btn{display:flex;align-items:center;gap:10px;padding:10px 22px;background:linear-gradient(135deg,#5865f2,#7c3aed);color:white;border-radius:12px;text-decoration:none;font-weight:700;font-size:0.98rem;box-shadow:0 4px 15px rgba(88,101,242,0.4);transition:all 0.3s ease;}
+.discord-btn:hover{background:linear-gradient(135deg,#4752c4,#5a3ed9);transform:translateY(-2px);box-shadow:0 8px 25px rgba(88,101,242,0.6);}
+
+/* HERO */
+.hero{
+  height:100vh;
+  min-height:900px;
+  position:relative;
+  background:url("https://cms-assets.themuse.com/media/lead/01212022-1047259374-coding-classes_scanrail.jpg") center/cover no-repeat fixed;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+.hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to bottom, rgba(6,0,15,0.75), rgba(6,0,15,0.92) 70%, rgba(6,0,15,1) 100%);
+  pointer-events:none;
+}
+
+.hero-fade{
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  height:200px;
+  background:linear-gradient(to bottom, transparent, #06000f);
+  pointer-events:none;
+  z-index:1;
+}
+
+.hero-content{
+  position:relative;
+  z-index:2;
+  max-width:1100px;
+  width:90%;
+  margin-top:-80px;
+}
+
+.hero-top{margin-bottom:40px;}
+.hero h1{font-family:'Orbitron',sans-serif;font-size:4.5rem;letter-spacing:8px;animation:neon-flow 6s ease-in-out infinite alternate;background:linear-gradient(90deg,#00eaff,#c4a0ff,#7c3aed,#ff6ec7); -webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 0 25px rgba(124,58,237,0.8),0 0 50px rgba(0,212,255,0.6);}
+@keyframes neon-flow{0%{text-shadow:0 0 25px #00eaff,0 0 50px #c4a0ff,0 0 80px #7c3aed;transform:scale(1);}100%{text-shadow:0 0 40px #c4a0ff,0 0 70px #7c3aed,0 0 100px #ff6ec7;transform:scale(1.035);}}
+.hero-info-row{display:flex;align-items:center;justify-content:center;gap:50px;flex-wrap:wrap;}
+.hero-description{max-width:500px;text-align:left;font-size:1.15rem;line-height:1.7;opacity:0.92;order:1;}
+.hero-description h3{font-family:'Orbitron',sans-serif;color:#c4a0ff;margin-bottom:15px;font-size:1.8rem;letter-spacing:1.5px;text-shadow:0 0 15px rgba(196,160,255,0.6);}
+.hero-pfp{width:180px;height:180px;border-radius:50%;object-fit:cover;border:4px solid rgba(196,160,255,0.35);box-shadow:0 0 40px rgba(124,58,237,0.5),0 0 80px rgba(0,212,255,0.3);flex-shrink:0;order:2;}
+.scroll-hint{font-size:0.98rem;opacity:0.75;margin-top:60px;letter-spacing:2px;color:#c4a0ff;animation:pulse-down 3s infinite ease-in-out;}
+@keyframes pulse-down{0%,100%{opacity:0.6;transform:translateY(0);}50%{opacity:1;transform:translateY(14px);}}
+
+/* FEATURES */
+.features{
+  padding:80px 10% 60px;
+  background:linear-gradient(to bottom, rgba(6,0,15,0.98), #0f001a 30%, #06000f 100%);
+  text-align:center;
+  opacity:0;
+  transform:translateY(30px);
+  transition:all 0.6s ease;
+  position:relative;
+  z-index:2;
+}
+.features.visible{opacity:1;transform:translateY(0);}
+.features h2{font-family:'Orbitron',sans-serif;font-size:2.4rem;margin-bottom:50px;background:linear-gradient(90deg,#00eaff,#c4a0ff); -webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 0 25px rgba(196,160,255,0.5);}
+.feature-list{display:flex;flex-wrap:wrap;justify-content:center;gap:30px;max-width:1200px;margin:0 auto;}
+.feature-item{
+  background:rgba(20,10,40,0.6);
+  border:1px solid rgba(124,58,237,0.25);
+  border-radius:16px;
+  padding:35px 25px;
+  width:300px;
+  backdrop-filter:blur(8px);
+}
+.neon-icon{
+  width:60px;
+  height:60px;
+  margin:0 auto 20px;
+  fill:none;
+  stroke:#c4a0ff;
+  stroke-width:2.2;
+  filter:drop-shadow(0 0 10px #c4a0ff) drop-shadow(0 0 20px rgba(124,58,237,0.7));
+  display:block;
+}
+
+/* MAIN CONTENT */
+.main-content{
+  padding:80px 10% 100px;
+  background:linear-gradient(to bottom,#06000f 0%,#0a001a 100%);
+}
+
+.click-here-heading {
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2.6rem;
+  margin-bottom: 50px;
+  background: linear-gradient(90deg, #00eaff, #c4a0ff, #ffd700);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 25px rgba(196,160,255,0.6);
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:30px;
+  max-width:1400px;
+  margin:0 auto;
+}
+
+.card{
+  background:linear-gradient(180deg,#1a0f2e,#0f0820);
+  border-radius:18px;
+  padding:14px;
+  text-align:center;
+  text-decoration:none;
+  color:#e0e0ff;
+  border:1px solid rgba(196,160,255,0.12);
+  opacity:0;
+  transform: translateX(-80px);
+  transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+  position:relative;
+  overflow:hidden;
+  min-height:260px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.card.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.card:nth-child(1) { transition-delay: 0.1s; }
+.card:nth-child(2) { transition-delay: 0.25s; }
+.card:nth-child(3) { transition-delay: 0.4s;  }
+.card:nth-child(4) { transition-delay: 0.55s; }
+.card:nth-child(5) { transition-delay: 0.7s;  }
+.card:nth-child(6) { transition-delay: 0.85s; }
+.card:nth-child(7) { transition-delay: 1.0s;  }
+.card:nth-child(8) { transition-delay: 1.15s; }
+
+.card h3 {
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity 0.6s ease-out 0.3s, transform 0.6s ease-out 0.3s;
+}
+
+.card.visible h3 {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card:hover{
+  transform:translateY(-10px);
+  box-shadow:0 20px 50px rgba(124,58,237,0.25), 0 0 30px rgba(196,160,255,0.15);
+  border-color:rgba(196,160,255,0.45);
+}
+
+.card-inner{
+  border:1px solid rgba(255,255,255,0.05);
+  border-radius:14px;
+  padding:30px 20px;
+  transition:all 0.4s ease;
+  background:linear-gradient(145deg,rgba(20,10,40,0.25),transparent);
+  flex-grow:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  min-height:200px;
+}
+
+.card:hover .card-inner{
+  border-color:rgba(196,160,255,0.35);
+  box-shadow:inset 0 0 25px rgba(196,160,255,0.08);
+}
+
+.card-icon{
+  width:55px;
+  height:55px;
+  margin:0 auto 20px;
+  stroke:#c4a0ff;
+  stroke-width:2;
+  fill:none;
+  filter:drop-shadow(0 0 8px rgba(196,160,255,0.4));
+  transition:all 0.4s ease;
+}
+
+.card:hover .card-icon{
+  stroke:#e0d0ff;
+  filter:drop-shadow(0 0 15px rgba(224,208,255,0.5));
+}
+
+.card h3{
+  font-size:1.15rem;
+  letter-spacing:1.2px;
+  color:#d0c0ff;
+  margin-top:10px;
+  transition:color 0.4s ease;
+}
+
+.card:hover h3{
+  color:#f0e8ff;
+  text-shadow:0 0 10px rgba(240,232,255,0.3);
+}
+
+/* STATUS */
+.status {
+  padding: 100px 10% 120px;
+  background: transparent;
+  position: relative;
+}
+
+.status-wrapper {
+  background: linear-gradient(145deg, rgba(30, 10, 60, 0.48), rgba(10, 20, 50, 0.38));
+  border: 1px solid rgba(100, 80, 255, 0.38);
+  border-radius: 36px;
+  padding: 70px 60px;
+  max-width: 1600px;
+  margin: 0 auto;
+  backdrop-filter: blur(32px) saturate(180%);
+  box-shadow: 
+    inset 0 0 60px rgba(100, 80, 255, 0.28),
+    0 0 100px rgba(100, 80, 255, 0.55),
+    0 30px 80px rgba(0, 0, 0, 0.65);
+  transition: all 0.55s ease;
+}
+
+.status-wrapper:hover {
+  box-shadow: 
+    inset 0 0 80px rgba(100, 80, 255, 0.4),
+    0 0 140px rgba(100, 80, 255, 0.75),
+    0 40px 100px rgba(0, 0, 0, 0.75);
+  transform: translateY(-10px);
+}
+
+.status h2 {
+  font-family:'Orbitron',sans-serif;
+  font-size:3rem;
+  background:linear-gradient(90deg,#ffd700,#c4a0ff,#7c3aed);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  text-shadow:0 0 30px rgba(255,215,0,0.4);
+  margin-bottom:60px;
+}
+
+.stats-grid {
+  display:flex;
+  flex-wrap:nowrap;
+  justify-content:center;
+  gap:50px;
+  overflow-x:auto;
+}
+
+.stat-item {
+  background: rgba(20, 10, 50, 0.25);
+  border: 1px solid rgba(100, 80, 255, 0.25);
+  border-radius: 24px;
+  padding: 40px 35px;
+  min-width: 240px;
+  backdrop-filter: blur(16px);
+  transition: all 0.45s ease;
+}
+
+.stat-item:hover {
+  background: rgba(30, 15, 70, 0.35);
+  box-shadow: 0 20px 60px rgba(100, 80, 255, 0.5);
+}
+
+.stat-number {
+  font-family:'Orbitron',sans-serif;
+  font-size:3.5rem;
+  font-weight:900;
+  background:linear-gradient(90deg,#ffd700,#ff6ec7,#c4a0ff);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  text-shadow:0 0 30px rgba(255,215,0,0.6),0 0 60px rgba(196,160,255,0.4);
+  margin-bottom:12px;
+  min-height:80px;
+}
+
+.stat-label {
+  font-size:1.15rem;
+  color:#d0c0ff;
+  opacity:0.9;
+  text-shadow:0 0 10px rgba(208,192,255,0.5);
+}
+
+
+footer {
+  background: #0a001a;
+  padding: 90px 8% 50px;
+  border-top: 1px solid rgba(124,58,237,0.18);
+  color: #d0d0ff;
+}
+
+.footer-container {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1.3fr;
+  gap: 40px 60px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.footer-brand {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2.4rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, #00d4ff, #c4a0ff, #7c3aed);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 20px;
+}
+
+.footer-desc {
+  font-size: 0.97rem;
+  line-height: 1.65;
+  color: #b0b0ff;
+}
+
+.footer-column h4 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.32rem;
+  color: #c4a0ff;
+  margin-bottom: 18px;
+}
+
+.footer-column ul {
+  list-style: none;
+}
+
+.footer-column li {
+  margin: 9px 0;
+  font-size: 0.96rem;
+  color: #c0c0ff;
+}
+
+.newsletter h4 {
+  margin-bottom: 14px;
+}
+
+.newsletter p {
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+  color: #b0b0ff;
+}
+
+.newsletter-form {
+  display: flex;
+  background: #1c1235;
+  border: 1px solid #5a4a7a;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.newsletter-form input {
+  flex: 1;
+  padding: 14px 16px;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 0.96rem;
+}
+
+.newsletter-form input::placeholder {
+  color: #9999cc;
+}
+
+.newsletter-form button {
+  background: linear-gradient(to right, #7c3aed, #a78bff);
+  border: none;
+  color: white;
+  padding: 0 22px;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.newsletter-form button:hover {
+  background: linear-gradient(to right, #a78bff, #7c3aed);
+}
+
+.footer-social {
+  margin-top: 30px;
+}
+
+.footer-social a {
+  color: #b0b0ff;
+  font-size: 1.9rem;
+  margin-right: 22px;
+  transition: 0.3s;
+}
+
+.footer-social a:hover {
+  color: #d0c0ff;
+  transform: translateY(-3px);
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 80px;
+  padding-top: 40px;
+  border-top: 1px solid rgba(124,58,237,0.15);
+  font-size: 0.9rem;
+  color: #8888cc;
+}
+
+.footer-bottom a {
+  color: #a0a0ff;
+  text-decoration: none;
+  margin: 0 14px;
+}
+
+.footer-bottom a:hover {
+  color: #c4a0ff;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .footer-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .footer-container {
+    grid-template-columns: 1fr;
+    gap: 60px;
+  }
+  .newsletter-form {
+    max-width: 100%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+  <div class="logo">uSer395x</div>
+
+  <div class="nav-links">
+    <div class="nav-item"><a href="#hero">Home</a></div>
+    <div class="nav-item"><a href="Software.html">Software</a></div>
+    <div class="nav-item"><a href="Plugins.html">Plugins</a></div>
+    <div class="nav-item"><a href="Extensions.html">Extensions & Scripts</a></div>
+    <div class="nav-item"><a href="About.html">About</a></div>
+    <div class="nav-item"><a href="Safety.html">Safety</a></div>
+    <div class="nav-item"><a href="Leaks.html">Leaks</a></div>
+  </div>
+
+  <a href="https://discord.com/invite/P9TftFvbuy" class="discord-btn" target="_blank">
+    Join Discord
+  </a>
+</div>
+
+<section class="hero" id="hero">
+  <div class="hero-content">
+    <div class="hero-top">
+      <h1>uSer395x</h1>
+    </div>
+
+    <div class="hero-info-row">
+      <div class="hero-description">
+        <h3>Welcome</h3>
+        <p>Welcome to uSer395x — The Software, Extensions, Scripts, leaks, etc... are available in this website, Created this website to organize and begginer friendly. If you have any questions that u still dont find any answer to <strong>Please visit our discord server</strong></p>
+      </div>
+
+      <img src="https://cdn.discordapp.com/icons/1383273823914164367/a_5708194b219d57ece701991713277aee.gif?size=256" class="hero-pfp" alt="uSer395x Profile">
+    </div>
+
+    <div class="scroll-hint">Scroll down</div>
+  </div>
+  <div class="hero-fade"></div>
+</section>
+
+<section class="features">
+  <h2>uSer395x</h2>
+  <div class="feature-list">
+    <div class="feature-item">
+      <svg class="neon-icon" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
+      <h3>Free downloads</h3>
+    </div>
+    <div class="feature-item">
+      <svg class="neon-icon" viewBox="0 0 24 24"><path d="M9 3h6v4a2 2 0 11-2 2h-2a2 2 0 11-2-2V3z"/><path d="M3 9h4a2 2 0 112 2v2a2 2 0 11-2 2H3V9z"/><path d="M15 15h4v6h-6v-4a2 2 0 112-2z"/></svg>
+      <h3>We provide software & plugins</h3>
+    </div>
+    <div class="feature-item">
+      <svg class="neon-icon" viewBox="0 0 24 24"><path d="M8 4L3 12l5 8"/><path d="M16 4l5 8-5 8"/></svg>
+      <h3>Extensions and scripts</h3>
+    </div>
+    <div class="feature-item">
+      <svg class="neon-icon" viewBox="0 0 24 24"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+      <h3>Cracked Files Download</h3>
+    </div>
+    <div class="feature-item">
+      <svg class="neon-icon" viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+      <h3>Free of malware</h3>
+    </div>
+  </div>
+</section>
+
+<section class="main-content" id="main-content">
+  <h2 class="click-here-heading">Select Category</h2>
+  <div class="grid">
+    <a href="Software.html" class="card" id="Software">
+      <div class="card-inner">
+        <svg class="card-icon" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
+        <h3>Software</h3>
+      </div>
+    </a>
+
+    <a href="Plugins.html" class="card">
+      <div class="card-inner">
+        <svg class="card-icon" viewBox="0 0 24 24">
+          <path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/>
+          <path d="M9 12l2 2 4-4"/>
+        </svg>
+        <h3>Plugins</h3>
+      </div>
+    </a>
+
+    <a href="Extensions.html" class="card" id="extensions">
+      <div class="card-inner">
+        <svg class="card-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        <h3>Extensions & Scripts</h3>
+      </div>
+    </a>
+
+    <a href="#pcgames" class="card">
+      <div class="card-inner">
+        <svg class="card-icon" viewBox="0 0 24 24">
+          <rect x="3" y="4" width="18" height="12" rx="2" ry="2" fill="none" stroke="#c4a0ff" stroke-width="2"/>
+          <rect x="5" y="6" width="14" height="8" fill="none" stroke="#c4a0ff" stroke-width="1.5"/>
+          <path d="M8 18h8" stroke="#c4a0ff" stroke-width="2"/>
+          <path d="M12 16v4" stroke="#c4a0ff" stroke-width="2"/>
+        </svg>
+        <h3>PC Games</h3>
+      </div>
+    </a>
+
+    <a href="Leaks.html" class="card" id="Leaks">
+      <div class="card-inner">
+        <svg class="card-icon" viewBox="0 0 24 24"><path d="M8 4L3 12l5 8"/><path d="M16 4l5 8-5 8"/></svg>
+        <h3>Leaks</h3>
+      </div>
+    </a>
+
+    <a href="#qa" class="card">
+      <div class="card-inner">
+        <svg class="card-icon" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10" fill="none" stroke="#c4a0ff" stroke-width="2"/>
+          <text x="12" y="17" font-size="14" font-weight="bold" text-anchor="middle" fill="#c4a0ff">?</text>
+        </svg>
+        <h3>Your Questions and Answers</h3>
+      </div>
+    </a>
+
+    <a href="About.html" class="card" id="about">
+      <div class="card-inner">
+        <svg class="card-icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M6 21c0-4 3-6 6-6s6 2 6 6"/></svg>
+        <h3>About</h3>
+      </div>
+    </a>
+
+    <a href="Safety.html" class="card" id="safety">
+      <div class="card-inner">
+        <svg class="card-icon" viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+        <h3>Safety</h3>
+      </div>
+    </a>
+  </div>
+
+  <section class="status">
+    <div class="status-wrapper">
+      <h2>Status</h2>
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-number" data-count="2000">0</div>
+          <div class="stat-label">Discord Users</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-count="2500">0</div>
+          <div class="stat-label">YouTube Subscribers</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-count="0">0</div>
+          <div class="stat-label">Total Downloads</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-count="0">0</div>
+          <div class="stat-label">Active Members</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<footer>
+  <div class="footer-container">
+
+    <div>
+      <div class="footer-brand">uSer395x</div>
+      <p class="footer-desc">
+        This is an independent digital resource platform focused on software-related information, technical insights, and community discussions. All trademarks, product names, and copyrights belong to their respective owners. This website does not host, promote, or distribute unauthorized or unlicensed software. All content is provided for educational and informational purposes only
+      </p>
+    </div>
+
+    <div class="footer-column">
+      <h4>Programs</h4>
+      <ul>
+        <li>Software</li>
+        <li>Plugins</li>
+        <li>Extensions & Scripts</li>
+        <li>Pc Games</li>
+        <li>Leaks</li>
+      </ul>
+    </div>
+
+    <div class="footer-column">
+      <h4>Updates</h4>
+      <ul>
+        <li>05/03/2026 - Latest Update, Website built date</li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Newsletter</h4>
+      <div class="newsletter">
+        <p>(Temporarily closed)</p>
+        <p style="margin-top:10px; font-size:0.9rem; opacity:0.85;">Newsletter is temporarily closed, I'll open it Later.
+        </p>
+      </div>
+
+      <div class="footer-social">
+
+  <!-- Twitter/X -->
+<a href="#" title="Twitter">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M22 5.92c-.77.35-1.6.58-2.47.69a4.3 4.3 0 0 0 1.88-2.37c-.83.49-1.75.84-2.72 1.03A4.28 4.28 0 0 0 12 8.86c0 .34.04.67.1.98C8.48 9.64 5.36 7.78 3.17 4.9a4.27 4.27 0 0 0-.58 2.15c0 1.48.75 2.78 1.9 3.54-.7-.02-1.36-.21-1.94-.53v.05c0 2.07 1.47 3.8 3.42 4.2-.36.1-.74.15-1.13.15-.28 0-.55-.03-.82-.08.56 1.74 2.18 3 4.1 3.03A8.6 8.6 0 0 1 2 19.54 12.13 12.13 0 0 0 8.56 21c7.87 0 12.18-6.52 12.18-12.17l-.01-.55A8.7 8.7 0 0 0 22 5.92z"/>
+  </svg>
+</a>
+
+<!-- Discord -->
+<a href="#" title="Discord">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3853-.3969-.8748-.6083-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8851 1.515.0699.0699 0 00-.032.0277C.5336 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0775.0105c.1202.099.246.1981.372.2914a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6061 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-.7242 0-1.327-.6684-1.327-1.49244s.5939-1.4922 1.327-1.4922c.7348 0 1.332.6677 1.332 1.4922 0 .824-.5972 1.4924-1.332 1.4924zm7.9748 0c-.7243 0-1.327-.6684-1.327-1.4924 0-.824.6028-1.4922 1.327-1.4922.7232 0 1.327.6684 1.327 1.4922 0 .824-.6035 1.4924-1.327 1.4924Z"/>
+  </svg>
+</a>
+
+<!-- TikTok -->
+<a href="#" title="TikTok">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M16 1a5 5 0 0 0 5 5v3a8 8 0 0 1-5-1.7V17a7 7 0 1 1-7-7c.34 0 .67.02 1 .07v3.1A4 4 0 1 0 13 17V1h3z"/>
+  </svg>
+</a>
+
+<!-- YouTube -->
+<a href="https://youtube.com/@user395xu3?si=FNrNX9UCq0KuAPIl" title="YouTube">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M23.5 6.2s-.23-1.6-.94-2.3c-.9-.94-1.9-.94-2.36-1C16.8 2.5 12 2.5 12 2.5h-.01s-4.8 0-8.2.4c-.46.06-1.46.06-2.36 1C.72 4.6.5 6.2.5 6.2S.25 8.1.25 10v1.9c0 1.9.25 3.8.25 3.8s.23 1.6.94 2.3c.9.94 2.08.91 2.61 1.01 1.9.18 7.95.24 7.95.24s4.8-.01 8.2-.41c.46-.06 1.46-.06 2.36-1 .71-.7.94-2.3.94-2.3s.25-1.9.25-3.8V10c0-1.9-.25-3.8-.25-3.8zM9.75 14.5v-5l5 2.5-5 2.5z"/>
+  </svg>
+  </a>
+
+</div>
+
+  </div>
+
+  <div class="footer-bottom">
+    Copyright 2026 - uSer395x<br>
+    <a href="https://example.com/terms">Terms & Conditions</a> • <a href="https://example.com/privacy-policy">Privacy Policy</a>
+  </div>
+</footer>
+
+<script>
+const revealItems = document.querySelectorAll('.features,.status');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, {threshold: 0.1});
+revealItems.forEach(item => observer.observe(item));
+
+const cards = document.querySelectorAll('.card');
+const cardObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.2 });
+
+cards.forEach(card => cardObserver.observe(card));
+
+const counters = document.querySelectorAll('.stat-number');
+const speed = 200;
+
+const animateCounter = (el) => {
+  const target = +el.getAttribute('data-count');
+  const count = +el.innerText.replace(/[^0-9]/g, '');
+  const increment = target / speed;
+
+  const label = el.parentElement.querySelector('.stat-label').textContent.trim();
+
+  if (count < target) {
+    el.innerText = Math.ceil(count + increment);
+    setTimeout(() => animateCounter(el), 20);
+  } else {
+    if (label === 'Discord Users') {
+      el.innerText = '2k+';
+    } else if (label === 'YouTube Subscribers') {
+      el.innerText = '2.5k+';
+    } else if (label === 'Total Downloads' || label === 'Active Members') {
+      el.innerText = 'N/A';
+    } else {
+      el.innerText = target.toLocaleString();
+    }
+  }
+};
+
+const startCounters = () => {
+  counters.forEach(counter => {
+    if (!counter.classList.contains('counted')) {
+      counter.classList.add('counted');
+      animateCounter(counter);
+    }
+  });
+};
+
+const statusObserver = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting) {
+    startCounters();
+    statusObserver.disconnect();
+  }
+}, { threshold: 0.3 });
+
+document.querySelector('.status') && statusObserver.observe(document.querySelector('.status'));
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    const targetId = this.getAttribute('href');
+    const targetElement = document.querySelector(targetId);
+    if (targetElement) {
+      const targetY = targetElement.getBoundingClientRect().top + window.pageYOffset - 80;
+      window.scrollTo({
+        top: targetY,
+        behavior: 'smooth'
+      });
+    }
+  });
+});
+</script>
+
+</body>
+</html>
